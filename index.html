@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Pages Test</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1d2671, #c33764);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #fff;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      padding: 40px 50px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      max-width: 420px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 8px 0;
+      opacity: 0.9;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #00e676;
+      color: #003b1f;
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      opacity: 0.75;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>🚀 It Works!</h1>
+    <p>Your website is live on GitHub Pages.</p>
+    <p>If you can see this page, DNS + hosting are set correctly.</p>
+
+    <div class="badge">Status: Online</div>
+
+    <footer>
+      <p>Test page generated at:</p>
+      <p id="time"></p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("time").textContent =
+      new Date().toLocaleString();
+  </script>
+</body>
+</html>
