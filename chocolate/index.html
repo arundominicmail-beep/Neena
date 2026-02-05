@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>For My Sweetest Neenu 🍫</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&family=Playball&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --dark-choco: #3e2723;
+            --milk-choco: #795548;
+            --white-choco: #fff9c4;
+            --gold: #ffc107;
+            --gold-shine: #ffe082;
+            --box-shadow: rgba(0,0,0,0.5);
+        }
+
+        body {
+            background: radial-gradient(circle at center, #5d4037 0%, #2b1b18 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Lato', sans-serif;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* --- Floating Cocoa Dust Particles --- */
+        .cocoa-dust {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .dust-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: floatDust 10s linear infinite;
+        }
+
+        @keyframes floatDust {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Header Section --- */
+        .header-container {
+            text-align: center;
+            z-index: 10;
+            margin-bottom: 20px;
+            /* Ensure header sits above everything */
+            position: relative; 
+        }
+
+        .title {
+            font-family: 'Playball', cursive;
+            color: var(--gold);
+            font-size: clamp(36px, 8vw, 60px);
+            margin-bottom: 10px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            animation: fadeIn 1s ease-out forwards 0.5s;
+            opacity: 0;
+            padding: 0 20px;
+            line-height: 1.2;
+        }
+
+        /* Fixed Placement: Now part of the flow, below title */
+        .instruction-text {
+            color: var(--gold-shine);
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            text-shadow: 0 2px 4px black;
+            height: 20px; /* Reserve space so layout doesn't jump */
+            letter-spacing: 1px;
+        }
+
+        /* --- The Gift Box Container --- */
+        .box-container {
+            position: relative;
+            width: clamp(300px, 85vw, 420px);
+            height: clamp(300px, 85vw, 420px);
+            z-index: 20;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* The Lid */
+        .box-lid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #4e342e, #3e2723);
+            border: 2px solid #5d4037;
+            border-radius: 15px;
+            box-shadow: 
+                0 20px 40px var(--box-shadow),
+                inset 0 0 20px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: top left;
+        }
+
+        /* Ribbon on Lid */
+        .ribbon-vertical {
+            position: absolute;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(to right, #b71c1c, #d32f2f, #b71c1c);
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        .ribbon-horizontal {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, #b71c1c, #d32f2f, #b71c1c);
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        
+        .bow {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            z-index: 31;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+            transition: transform 0.3s;
+        }
+        .bow::before, .bow::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50% 50% 0 50%;
+            background: radial-gradient(circle at 30% 30%, #ff5252, #b71c1c);
+            transform: rotate(45deg);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .bow::after {
+            left: 60px;
+            transform: rotate(135deg) scaleX(-1);
+            border-radius: 50% 50% 50% 0;
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: 25px;
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            animation: pulse 1.5s infinite;
+            background: rgba(0,0,0,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* The Box Interior */
+        .box-interior {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2d1d19;
+            border-radius: 15px;
+            box-shadow: 
+                0 30px 60px rgba(0,0,0,0.6),
+                inset 0 0 30px rgba(0,0,0,0.8);
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        /* --- Chocolates & Messages --- */
+        .choco-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .chocolate {
+            width: 90px;
+            height: 90px;
+            transition: transform 0.2s;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6));
+            position: relative;
+            z-index: 5;
+        }
+
+        .chocolate:active {
+            transform: scale(0.95);
+        }
+
+        /* 1. REALISTIC DARK HEART */
+        .choco-1 {
+            background: radial-gradient(circle at 30% 30%, #5d4037, #261613);
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            mask-size: contain;
+            -webkit-mask-size: contain;
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+            mask-position: center;
+        }
+        /* Glossy shine */
+        .choco-1::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 15%;
+            width: 40%;
+            height: 30%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            border-radius: 50%;
+        }
+
+        /* 2. REALISTIC MILK SQUARE */
+        .choco-2 {
+            background: linear-gradient(135deg, #8d6e63, #5d4037);
+            border-radius: 8px;
+            box-shadow: inset 2px 2px 5px rgba(255,255,255,0.1), inset -2px -2px 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Inner square pattern */
+        .choco-2::before {
+            content: '';
+            width: 70%;
+            height: 70%;
+            border: 2px solid rgba(45, 29, 25, 0.3);
+            border-radius: 4px;
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.1);
+        }
+
+        /* 3. REALISTIC WHITE TRUFFLE */
+        .choco-3 {
+            background: radial-gradient(circle at 35% 35%, #fff9c4, #e6ce78);
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.2);
+        }
+        /* Drizzle pattern */
+        .choco-3::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 10px,
+                rgba(121, 85, 72, 0.4) 10px,
+                rgba(121, 85, 72, 0.4) 12px
+            );
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        /* 4. REALISTIC GOLD PRALINE */
+        .choco-4 {
+            background: radial-gradient(circle at 30% 30%, #ffca28, #ff6f00);
+            border-radius: 12px;
+            transform: rotate(45deg) scale(0.85); /* Diamond shape */
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Texture */
+        .choco-4::before {
+            content: '';
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+            background-size: 6px 6px;
+            border-radius: 12px;
+            opacity: 0.6;
+        }
+
+        /* --- Messages Hidden Under Chocolates --- */
+        .hidden-msg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Playball', cursive;
+            color: #d7ccc8;
+            font-size: 19px;
+            line-height: 1.4;
+            z-index: 1;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s ease;
+            pointer-events: none;
+            text-shadow: 0 2px 4px black;
+        }
+
+        /* --- Animations --- */
+        .open-box .box-lid {
+            transform: translateY(-120%) rotate(-10deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .eaten {
+            animation: eatAnim 0.4s forwards;
+        }
+
+        @keyframes eatAnim {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .revealed {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* --- Final Footer Card (Centered Overlay) --- */
+        .final-message-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(45, 29, 25, 0.95);
+            border: 2px solid var(--gold);
+            padding: 40px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(255, 193, 7, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 100;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .show-final {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .final-title {
+            font-family: 'Playball', cursive;
+            color: var(--gold);
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        .final-text {
+            color: var(--white-choco);
+            font-family: 'Lato', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .final-signature {
+            margin-top: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: var(--gold-shine);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            display: inline-block;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Laptop Adjustments */
+        @media (min-width: 1024px) {
+            .box-container {
+                width: 450px;
+                height: 450px;
+            }
+            .chocolate {
+                width: 120px;
+                height: 120px;
+            }
+            .hidden-msg {
+                font-size: 24px;
+            }
+            .title {
+                font-size: 64px;
+            }
+        }
+        
+        /* Mobile Adjustments */
+        @media (max-width: 400px) {
+            .chocolate {
+                width: 70px;
+                height: 70px;
+            }
+            .box-container {
+                width: 320px;
+                height: 320px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="cocoa-dust" id="dust"></div>
+
+    <div class="header-container">
+        <h1 class="title">For My Sweetest Neenu</h1>
+        <div class="instruction-text" id="instruction">
+            Tap each chocolate to taste...
+        </div>
+    </div>
+
+    <div class="box-container" id="giftBox">
+        
+        <div class="box-interior">
+            
+            <div class="choco-wrapper" onclick="eatChocolate(this)">
+                <div class="chocolate choco-1"></div>
+                <div class="hidden-msg">Your love is the<br>sweetest addiction</div>
+            </div>
+
+            <div class="choco-wrapper" onclick="eatChocolate(this)">
+                <div class="chocolate choco-2"></div>
+                <div class="hidden-msg">You are the desire<br>of my heart</div>
+            </div>
+
+            <div class="choco-wrapper" onclick="eatChocolate(this)">
+                <div class="chocolate choco-3"></div>
+                <div class="hidden-msg">With you, every<br>moment is luxury</div>
+            </div>
+
+            <div class="choco-wrapper" onclick="eatChocolate(this)">
+                <div class="chocolate choco-4"></div>
+                <div class="hidden-msg">You are my<br>forever craving</div>
+            </div>
+
+        </div>
+
+        <div class="box-lid" onclick="openBox()">
+            <div class="ribbon-vertical"></div>
+            <div class="ribbon-horizontal"></div>
+            <div class="bow"></div>
+            <div class="tap-hint">Tap to Open</div>
+        </div>
+
+    </div>
+
+    <div class="final-message-card" id="finalCard">
+        <div class="final-title">Happy Chocolate Day!</div>
+        <div class="final-text">
+            No chocolate in the world is as sweet as your smile.<br>
+            Thank you for making my life delicious.
+        </div>
+        <div class="final-signature">
+            Love, Arun
+        </div>
+    </div>
+
+    <script>
+        // Dust Particles
+        const dustContainer = document.getElementById('dust');
+        for(let i=0; i<30; i++) {
+            const p = document.createElement('div');
+            p.className = 'dust-particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.width = Math.random() * 4 + 2 + 'px';
+            p.style.height = p.style.width;
+            p.style.animationDuration = Math.random() * 10 + 10 + 's';
+            p.style.animationDelay = Math.random() * 5 + 's';
+            dustContainer.appendChild(p);
+        }
+
+        // Logic
+        let boxOpened = false;
+        let chocolatesEaten = 0;
+        const totalChocolates = 4; // Now 4
+
+        function openBox() {
+            if (!boxOpened) {
+                document.getElementById('giftBox').classList.add('open-box');
+                boxOpened = true;
+                
+                // Show instruction after lid moves
+                setTimeout(() => {
+                    document.getElementById('instruction').style.opacity = '1';
+                }, 500);
+            }
+        }
+
+        function eatChocolate(element) {
+            if (!boxOpened) return; // Can't eat if closed
+            
+            const choco = element.querySelector('.chocolate');
+            const msg = element.querySelector('.hidden-msg');
+
+            // If already eaten, ignore
+            if (choco.classList.contains('eaten')) return;
+
+            // Hide instruction once first chocolate is clicked
+            document.getElementById('instruction').style.opacity = '0';
+
+            // Animate eating
+            choco.classList.add('eaten');
+            
+            // Create crumbs effect
+            createCrumbs(element);
+
+            // Reveal message after short delay
+            setTimeout(() => {
+                msg.classList.add('revealed');
+            }, 300);
+
+            chocolatesEaten++;
+
+            // Check if all eaten
+            if (chocolatesEaten === totalChocolates) {
+                setTimeout(() => {
+                    // Show final card
+                    document.getElementById('finalCard').classList.add('show-final');
+                    celebrate();
+                }, 1200);
+            }
+        }
+
+        function createCrumbs(parent) {
+            const rect = parent.getBoundingClientRect();
+            const colors = ['#3e2723', '#795548', '#d7ccc8', '#ffca28'];
+            
+            for(let i=0; i<15; i++) {
+                const crumb = document.createElement('div');
+                crumb.style.position = 'fixed';
+                crumb.style.left = (rect.left + rect.width/2) + 'px';
+                crumb.style.top = (rect.top + rect.height/2) + 'px';
+                crumb.style.width = Math.random() * 6 + 2 + 'px';
+                crumb.style.height = crumb.style.width;
+                crumb.style.background = colors[Math.floor(Math.random() * colors.length)];
+                crumb.style.borderRadius = '50%';
+                crumb.style.pointerEvents = 'none';
+                crumb.style.zIndex = '100';
+                
+                // Random explosion direction
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 100 + 50;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                crumb.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 600,
+                    easing: 'ease-out'
+                });
+
+                document.body.appendChild(crumb);
+                setTimeout(() => crumb.remove(), 600);
+            }
+        }
+
+        function celebrate() {
+            // Simple confetti for final celebration
+            setInterval(() => {
+                const colors = ['#ffd54f', '#d32f2f', '#fff'];
+                const c = document.createElement('div');
+                c.style.position = 'fixed';
+                c.style.top = '-10px';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.width = '10px';
+                c.style.height = '10px';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.zIndex = '150';
+                c.style.borderRadius = '50%';
+                
+                document.body.appendChild(c);
+                
+                c.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: 'translateY(100vh) rotate(720deg)', opacity: 0 }
+                ], {
+                    duration: 3000,
+                    easing: 'linear'
+                });
+                
+                setTimeout(() => c.remove(), 3000);
+            }, 200);
+        }
+
+    </script>
+</body>
+</html>
