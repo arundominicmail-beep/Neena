@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Promises in the Sky ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;600;700&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: 'Cormorant Upright', serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- THE SCENE --- */
+        
+        /* The Sky */
+        .sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 65%;
+            background: linear-gradient(to bottom, #020111 0%, #191621 60%, #2c2436 100%);
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Stars */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white 1px, transparent 1px),
+                radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
+            background-size: 50px 50px, 100px 100px;
+            background-position: 0 0, 20px 20px;
+            opacity: 0.6;
+            animation: skyRotate 200s linear infinite;
+        }
+
+        /* The Mountains */
+        .mountains {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: cover;
+            background-image: 
+                linear-gradient(to top, #0c0a13 0%, transparent 100%),
+                radial-gradient(ellipse at 20% 100%, #15121e 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, #100e16 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, #08060a 0%, transparent 60%);
+            z-index: 1;
+            opacity: 0.9;
+        }
+
+        /* The Lake */
+        .lake {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 35%;
+            background: linear-gradient(to bottom, #1a1624 0%, #050508 100%);
+            z-index: 10;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .lake-reflection-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            filter: blur(4px) brightness(0.7);
+            transform: scaleY(-1);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .ripple-overlay {
+            position: absolute;
+            inset: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg, 
+                    transparent 0px, 
+                    transparent 2px, 
+                    rgba(0,0,0,0.1) 3px, 
+                    rgba(0,0,0,0.1) 4px
+                );
+            z-index: 11;
+            pointer-events: none;
+        }
+
+        /* --- THE LANTERNS --- */
+        .lantern-container {
+            position: absolute;
+            left: 50%;
+            bottom: -100px;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 1s ease-out;
+            pointer-events: none;
+        }
+
+        .lantern {
+            width: 50px;
+            height: 70px;
+            background: linear-gradient(to bottom, #ff9800, #ff5722);
+            border-radius: 8px 8px 20px 20px;
+            position: relative;
+            box-shadow: 
+                0 0 20px rgba(255, 152, 0, 0.6),
+                inset 0 0 20px rgba(255, 235, 59, 0.5);
+            animation: flicker 4s infinite alternate;
+        }
+
+        .lantern::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: #3e2723;
+            border-radius: 2px;
+        }
+        .lantern::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 4px;
+            background: #3e2723;
+            border-radius: 2px;
+        }
+
+        .floating {
+            animation: floatUp 18s linear forwards;
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 0; }
+            5% { opacity: 1; }
+            100% { transform: translateX(var(--drift)) translateY(-120vh) scale(0.4); opacity: 0.8; }
+        }
+
+        @keyframes flicker {
+            0% { box-shadow: 0 0 20px rgba(255, 152, 0, 0.6), inset 0 0 10px rgba(255, 235, 59, 0.5); }
+            100% { box-shadow: 0 0 18px rgba(255, 152, 0, 0.5), inset 0 0 8px rgba(255, 235, 59, 0.4); }
+        }
+
+        /* --- THE PROMISES --- */
+        .promise-card {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .promise-text {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 600;
+            line-height: 1.3;
+            color: #ffecd2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(255, 160, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .promise-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .promise-num {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        /* --- NEW: ELEGANT CONTROLS AREA --- */
+        .controls {
+            position: absolute;
+            bottom: 60px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            transition: opacity 1s;
+        }
+
+        /* The Button Container for the Halo */
+        .btn-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* The Magic Halo Ring */
+        .btn-halo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50px;
+            border: 1px dashed rgba(255, 236, 179, 0.4);
+            animation: spinHalo 10s linear infinite;
+            pointer-events: none;
+            padding: 5px; /* Spacing from button */
+            top: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+        }
+
+        @keyframes spinHalo {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* The Redesigned Romantic Button */
+        .btn-main {
+            /* Rose Gold Glass Effect */
+            background: linear-gradient(135deg, rgba(255, 171, 145, 0.15), rgba(225, 190, 231, 0.1));
+            border: 1px solid rgba(255, 224, 178, 0.6);
+            color: #ffecd2;
+            padding: 16px 45px;
+            border-radius: 50px;
+            
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            box-shadow: 
+                0 5px 20px rgba(0,0,0,0.2),
+                inset 0 0 20px rgba(255, 236, 179, 0.1);
+            
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            min-width: 280px; /* Ensure space for longer text */
+            justify-content: center;
+        }
+
+        .btn-main:hover {
+            background: linear-gradient(135deg, rgba(255, 171, 145, 0.25), rgba(225, 190, 231, 0.2));
+            box-shadow: 
+                0 10px 30px rgba(255, 112, 67, 0.2),
+                inset 0 0 20px rgba(255, 236, 179, 0.2);
+            transform: translateY(-2px) scale(1.02);
+            letter-spacing: 4px; /* Subtle text expansion */
+        }
+        
+        .btn-main:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .heart-icon {
+            font-size: 16px;
+            color: #ffab91;
+            filter: drop-shadow(0 0 5px rgba(255, 171, 145, 0.8));
+            animation: heartbeat 2s infinite ease-in-out;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; text-shadow: 0 0 10px #ff7043; }
+        }
+
+        .instruction {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            pointer-events: none;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* --- FINALE --- */
+        .final-screen {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s;
+            text-align: center;
+        }
+
+        .final-screen.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @keyframes skyRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sky">
+        <div class="stars"></div>
+        <div class="mountains"></div>
+    </div>
+
+    <div class="lake">
+        <div class="lake-reflection-layer" id="reflectionLayer"></div>
+        <div class="ripple-overlay"></div>
+    </div>
+
+    <div class="promise-card">
+        <div class="promise-num" id="pNum">PROMISE 01</div>
+        <div class="promise-text" id="pText"></div>
+    </div>
+
+    <div class="controls" id="controls">
+        <div class="btn-wrapper">
+            <div class="btn-halo"></div>
+            <button class="btn-main" id="actionBtn" onclick="releaseNext()">
+                Light the First Flame <span class="heart-icon">♥</span>
+            </button>
+        </div>
+        <div class="instruction">Tap to release to the heavens</div>
+    </div>
+
+    <div class="final-screen" id="finale">
+        <h1 style="font-size: 60px; color: #ffecd2; margin-bottom: 20px;">Happy Promise Day</h1>
+        <p style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px; line-height: 1.8;">
+            Neenu, these are my vows to you.<br>
+            Written in light, kept in my heart.<br>
+            Forever.
+        </p>
+        <p style="margin-top: 40px; color: #ff9800; font-size: 20px;">Love, Arun</p>
+    </div>
+
+    <script>
+        const promises = [
+            "I Promise To Always Respect You.",
+            "I Promise To Continue Loving You,<br>Every Day, In My Own Sincere Way.",
+            "I Promise To Be Loyal<br>And Never Betray Your Trust.",
+            "I Promise To Make Time For You,<br>No Matter How Busy Life Gets.",
+            "I Promise To Care For You —<br>Gently, Genuinely, And Wholeheartedly."
+        ];
+
+        // Romantic prompts for the button
+        const buttonPrompts = [
+            "Release the Second Vow",
+            "Send the Third Promise",
+            "Illuminate the Fourth Bond",
+            "Seal the Final Pledge",
+            "Make A Wish... ✨" 
+        ];
+
+        let currentIndex = 0;
+        const pText = document.getElementById('pText');
+        const pNum = document.getElementById('pNum');
+        const reflectionLayer = document.getElementById('reflectionLayer');
+        const controls = document.getElementById('controls');
+        const actionBtn = document.getElementById('actionBtn');
+
+        function releaseNext() {
+            if (currentIndex >= promises.length) {
+                triggerFinale();
+                return;
+            }
+
+            // 1. Create Lantern in Sky
+            createLantern();
+
+            // 2. Disable button briefly to prevent double clicks
+            actionBtn.style.pointerEvents = 'none';
+            setTimeout(() => { actionBtn.style.pointerEvents = 'auto'; }, 1000);
+
+            // 3. Update Text Logic
+            pText.classList.remove('visible');
+            pNum.style.opacity = '0';
+
+            setTimeout(() => {
+                pText.innerHTML = promises[currentIndex];
+                pNum.innerText = `PROMISE 0${currentIndex + 1}`;
+                
+                pText.classList.add('visible');
+                pNum.style.opacity = '1';
+                
+                // Update Button Text Logic
+                if (currentIndex < buttonPrompts.length) {
+                    actionBtn.innerHTML = `${buttonPrompts[currentIndex]} <span class="heart-icon">♥</span>`;
+                }
+
+                currentIndex++;
+
+                // If we just showed the last promise (index 5), the next click is the finale
+                // We speed up the wait time for the finale trigger
+            }, 500);
+        }
+
+        function createLantern() {
+            const drift = (Math.random() - 0.5) * 50 + '%';
+            const startX = (Math.random() - 0.5) * 20;
+
+            // Sky Lantern
+            const lantern = document.createElement('div');
+            lantern.className = 'lantern-container floating';
+            lantern.style.left = `calc(50% + ${startX}px)`;
+            lantern.style.setProperty('--drift', drift);
+            const scale = 0.8 + Math.random() * 0.4;
+            lantern.style.transform = `translateX(-50%) scale(${scale})`;
+            lantern.innerHTML = '<div class="lantern"></div>';
+            document.querySelector('.sky').appendChild(lantern);
+
+            // Reflection Lantern
+            const reflection = lantern.cloneNode(true);
+            reflection.style.bottom = 'auto'; 
+            reflection.style.top = '100px'; 
+            reflection.style.opacity = '0.5';
+            reflection.style.filter = 'blur(1px)';
+            reflectionLayer.appendChild(reflection);
+
+            setTimeout(() => {
+                lantern.remove();
+                reflection.remove();
+            }, 18000);
+        }
+
+        function triggerFinale() {
+            controls.style.transition = "opacity 1s";
+            controls.style.opacity = '0';
+            controls.style.pointerEvents = 'none';
+            
+            pText.style.opacity = '0';
+            pNum.style.opacity = '0';
+            
+            // Launch many lanterns for background effect
+            let interval = setInterval(() => {
+                createLantern();
+            }, 200);
+
+            // Much faster finale display (2.5 seconds instead of 6)
+            setTimeout(() => {
+                clearInterval(interval);
+                document.getElementById('finale').classList.add('show');
+            }, 2500);
+        }
+
+        // Ambient lanterns
+        setInterval(() => {
+            if(Math.random() > 0.7) createBgLantern();
+        }, 2000);
+
+        function createBgLantern() {
+            const l = document.createElement('div');
+            l.className = 'lantern-container floating';
+            l.style.left = Math.random() * 100 + '%';
+            l.style.setProperty('--drift', '0%');
+            l.style.animationDuration = '25s';
+            l.style.opacity = '0.5';
+            l.style.transform = `scale(${Math.random() * 0.3 + 0.1})`;
+            l.innerHTML = '<div class="lantern" style="background:#ff5722"></div>';
+            document.querySelector('.sky').insertBefore(l, document.querySelector('.mountains'));
+            setTimeout(() => l.remove(), 25000);
+        }
+    </script>
+</body>
+</html>
