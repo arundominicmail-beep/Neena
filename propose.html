@@ -118,16 +118,34 @@
                 rgba(255, 240, 243, 0.98) 0%, 
                 rgba(255, 204, 213, 0.95) 100%);
             backdrop-filter: blur(30px);
-            border-radius: clamp(30px, 5vw, 50px);
-            padding: clamp(50px, 8vw, 80px) clamp(40px, 6vw, 60px);
-            max-width: 700px;
-            width: 100%;
+            border-radius: clamp(25px, 3vw, 40px);
+            padding: clamp(40px, 5vw, 70px) clamp(35px, 4vw, 60px);
+            max-width: 600px;
+            width: 90%;
             box-shadow: 
                 0 0 0 1px rgba(255, 255, 255, 0.5),
                 0 40px 100px rgba(201, 24, 74, 0.4),
                 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: cardEntrance 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             overflow: hidden;
+        }
+        
+        /* FIX APPLIED HERE:
+           Only use larger padding if the screen is both WIDE and TALL.
+           This prevents the card from being too big on laptops.
+        */
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .card {
+                max-width: 550px;
+                padding: 60px 55px;
+            }
+        }
+        
+        @media (min-width: 1440px) {
+            .card {
+                max-width: 600px;
+                padding: 70px 60px;
+            }
         }
 
         .card::before {
@@ -182,7 +200,7 @@
         /* Typography */
         .name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(52px, 12vw, 96px);
+            font-size: clamp(44px, 8vw, 72px);
             font-weight: 700;
             background: linear-gradient(135deg, 
                 var(--deep-rose) 0%, 
@@ -192,12 +210,20 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-align: center;
-            margin-bottom: clamp(35px, 7vw, 55px);
+            margin-bottom: clamp(25px, 4vw, 40px);
             letter-spacing: -0.02em;
             line-height: 1.1;
             animation: nameGlow 3s ease-in-out infinite;
             position: relative;
             z-index: 1;
+        }
+        
+        /* FIX: Only increase font size on tall screens */
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .name {
+                font-size: 64px;
+                margin-bottom: 35px;
+            }
         }
 
         @keyframes nameGlow {
@@ -213,26 +239,40 @@
 
         .question {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(32px, 7vw, 52px);
+            font-size: clamp(26px, 5vw, 38px);
             font-weight: 600;
             color: var(--dark);
             text-align: center;
-            margin-bottom: clamp(45px, 9vw, 70px);
+            margin-bottom: clamp(35px, 6vw, 55px);
             line-height: 1.5;
             letter-spacing: 0.01em;
             position: relative;
             z-index: 1;
+        }
+        
+        /* FIX: Only increase font size on tall screens */
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .question {
+                font-size: 36px;
+                margin-bottom: 50px;
+            }
         }
 
         /* Buttons container */
         .buttons-wrapper {
             position: relative;
             width: 100%;
-            min-height: clamp(100px, 20vw, 140px);
+            min-height: clamp(90px, 15vw, 120px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1;
+        }
+        
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .buttons-wrapper {
+                min-height: 110px;
+            }
         }
 
         .buttons-container {
@@ -245,18 +285,25 @@
 
         button {
             position: relative;
-            padding: clamp(18px, 3.5vw, 24px) clamp(45px, 9vw, 75px);
-            font-size: clamp(22px, 4.5vw, 32px);
+            padding: clamp(14px, 2.5vw, 20px) clamp(35px, 6vw, 60px);
+            font-size: clamp(18px, 3.5vw, 26px);
             font-weight: 600;
             font-family: 'Montserrat', sans-serif;
             border: none;
-            border-radius: clamp(40px, 8vw, 65px);
+            border-radius: clamp(30px, 5vw, 50px);
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             outline: none;
             letter-spacing: 0.03em;
             text-transform: uppercase;
             touch-action: manipulation;
+        }
+        
+        @media (min-width: 1024px) and (min-height: 850px) {
+            button {
+                padding: 18px 55px;
+                font-size: 24px;
+            }
         }
 
         #yesBtn {
@@ -305,7 +352,10 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Celebration screen */
+        /* FIX APPLIED HERE:
+           The celebration container now handles scrolling properly.
+           We removed "overflow: hidden" logic and added "overflow-y: auto".
+        */
         .celebration {
             display: none;
             position: fixed;
@@ -316,6 +366,7 @@
                 #a4133c 50%,
                 #590d22 100%);
             animation: celebrationReveal 1s ease-out;
+            overflow-y: auto; /* Allows scrolling if content is too tall */
         }
 
         @keyframes celebrationReveal {
@@ -329,31 +380,44 @@
             }
         }
 
+        /*
+           FIX APPLIED HERE:
+           Use min-height: 100vh to ensure full screen coverage but allow expansion.
+           Added padding to ensure text doesn't hit edges on small laptops.
+        */
         .celebration-content {
             position: relative;
             z-index: 2001;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: clamp(20px, 5vw, 60px);
+            padding: clamp(40px, 5vw, 60px) 20px;
             text-align: center;
             color: white;
-            overflow-y: auto;
+            /* Removed overflow-y: auto from here */
         }
 
         .celebration-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(64px, 16vw, 130px);
+            font-size: clamp(52px, 12vw, 96px);
             font-weight: 700;
-            margin-bottom: clamp(25px, 5vw, 45px);
+            margin-bottom: clamp(20px, 4vw, 35px);
             animation: titleBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-shadow: 
                 0 0 30px rgba(255, 255, 255, 0.6),
                 0 5px 10px rgba(0, 0, 0, 0.3);
             letter-spacing: -0.02em;
             line-height: 1.1;
+        }
+        
+        /* FIX: Only increase font size on tall screens */
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .celebration-title {
+                font-size: 88px;
+                margin-bottom: 35px;
+            }
         }
 
         @keyframes titleBounce {
@@ -372,13 +436,21 @@
 
         .celebration-text {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(22px, 5vw, 40px);
+            font-size: clamp(18px, 4vw, 30px);
             font-weight: 300;
             max-width: 950px;
             line-height: 1.8;
-            margin-bottom: clamp(25px, 5vw, 40px);
+            margin-bottom: clamp(20px, 4vw, 30px);
             animation: textFadeUp 1s ease-out both;
             text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* FIX: Only increase font size on tall screens */
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .celebration-text {
+                font-size: 28px;
+                margin-bottom: 28px;
+            }
         }
 
         .celebration-text:nth-of-type(2) { animation-delay: 0.3s; }
@@ -396,23 +468,39 @@
         }
 
         .hearts-display {
-            font-size: clamp(48px, 12vw, 90px);
-            margin: clamp(35px, 7vw, 70px) 0;
+            font-size: clamp(40px, 10vw, 70px);
+            margin: clamp(30px, 6vw, 50px) 0;
             animation: textFadeUp 1s ease-out 0.9s both;
             filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+        }
+        
+        /* FIX: Only increase font size on tall screens */
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .hearts-display {
+                font-size: 64px;
+                margin: 45px 0;
+            }
         }
 
         .quote {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(24px, 5.5vw, 42px);
+            font-size: clamp(20px, 4.5vw, 32px);
             font-style: italic;
             font-weight: 300;
             max-width: 900px;
             line-height: 1.8;
-            margin-top: clamp(40px, 8vw, 70px);
+            margin-top: clamp(35px, 7vw, 55px);
             animation: textFadeUp 1s ease-out 1.2s both;
             opacity: 0.95;
             text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* FIX: Only increase font size on tall screens */
+        @media (min-width: 1024px) and (min-height: 850px) {
+            .quote {
+                font-size: 30px;
+                margin-top: 50px;
+            }
         }
 
         /* Fireworks */
@@ -530,13 +618,10 @@
     </style>
 </head>
 <body>
-    <!-- Background -->
     <div class="background"></div>
 
-    <!-- Particles -->
     <div class="particles" id="particles"></div>
 
-    <!-- Main screen -->
     <div class="container" id="mainScreen">
         <div class="card">
             <h1 class="name">Neenu 💕</h1>
@@ -550,7 +635,6 @@
         </div>
     </div>
 
-    <!-- Celebration screen -->
     <div class="celebration" id="celebration">
         <div class="fireworks" id="fireworks"></div>
         <div class="celebration-content">
