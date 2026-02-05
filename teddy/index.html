@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>For My Cuddly Neenu 🧸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --fur-color: #d4a373;
+            --belly-color: #faedcd;
+            --snout-color: #fefae0;
+            --nose-color: #603808;
+            /* NEW: Warmer, cozier background (Cream to Soft Apricot) */
+            --bg-gradient: radial-gradient(circle at 50% 30%, #fffcf2 0%, #f7e1d7 100%);
+            --heart-red: #e63946;
+            --text-color: #5d4037;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 50px;
+        }
+
+        /* --- Floating Background Elements --- */
+        .cloud-bg {
+            position: fixed;
+            background: #fff;
+            border-radius: 50%;
+            /* Lower opacity for better blend with cream background */
+            opacity: 0.4; 
+            filter: blur(20px);
+            z-index: 0;
+            pointer-events: none;
+            animation: floatCloud 20s infinite alternate;
+        }
+        .c1 { width: 300px; height: 300px; top: -50px; left: -50px; }
+        .c2 { width: 400px; height: 400px; bottom: 10%; right: -50px; animation-delay: -10s; }
+        .c3 { width: 200px; height: 200px; top: 40%; left: 10%; opacity: 0.2; }
+
+        @keyframes floatCloud {
+            from { transform: translate(0, 0); }
+            to { transform: translate(20px, 20px); }
+        }
+
+        /* --- Header --- */
+        .header {
+            margin-top: 40px;
+            text-align: center;
+            z-index: 10;
+            margin-bottom: 60px; 
+        }
+        
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #c0392b; /* Slightly deeper red for contrast */
+            font-size: clamp(36px, 6vw, 52px);
+            margin-bottom: 10px;
+            /* Softer shadow */
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.4); 
+            line-height: 1.2;
+            padding: 0 10px;
+        }
+
+        .subtitle {
+            color: #8d5524;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: rgba(255,255,255,0.6);
+            padding: 10px 22px;
+            border-radius: 30px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- The Teddy Bear Container --- */
+        .teddy-wrapper {
+            position: relative;
+            height: 350px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 5;
+            margin-bottom: 30px;
+        }
+
+        .teddy-container {
+            position: relative;
+            width: 300px;
+            height: 340px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: idleBounce 3s ease-in-out infinite;
+        }
+
+        .teddy-container:active {
+            transform: scale(0.9) !important;
+        }
+        
+        .teddy-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* --- Teddy CSS Drawing --- */
+        .ear {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: var(--fur-color);
+            border-radius: 50%;
+            top: 40px;
+            z-index: 1;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+        }
+        .ear.left { left: 20px; }
+        .ear.right { right: 20px; }
+        .ear::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--belly-color);
+            border-radius: 50%;
+            top: 15px;
+            left: 15px;
+        }
+
+        .head {
+            position: absolute;
+            width: 200px;
+            height: 180px;
+            background: var(--fur-color);
+            border-radius: 50% 50% 45% 45%;
+            top: 50px;
+            left: 50px;
+            z-index: 2;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .snout {
+            position: absolute;
+            width: 80px;
+            height: 60px;
+            background: var(--snout-color);
+            border-radius: 50%;
+            bottom: 30px;
+            left: 60px;
+            z-index: 3;
+        }
+        .nose {
+            position: absolute;
+            width: 25px;
+            height: 18px;
+            background: var(--nose-color);
+            border-radius: 40%;
+            top: 15px;
+            left: 28px;
+        }
+        .mouth {
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            border-bottom: 3px solid var(--nose-color);
+            border-radius: 50%;
+            bottom: 15px;
+            left: 30px;
+        }
+        .mouth::before {
+            content: '';
+            position: absolute;
+            height: 10px;
+            width: 3px;
+            background: var(--nose-color);
+            top: -10px;
+            left: 8px;
+        }
+
+        .eye {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            top: 65px;
+            z-index: 3;
+            transition: all 0.2s;
+        }
+        .eye.left { left: 55px; }
+        .eye.right { right: 55px; }
+        .eye::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 4px;
+            left: 4px;
+        }
+
+        .blush {
+            position: absolute;
+            width: 25px;
+            height: 15px;
+            background: #ffb4a2;
+            border-radius: 50%;
+            top: 95px;
+            opacity: 0.6;
+            z-index: 3;
+        }
+        .blush.left { left: 40px; }
+        .blush.right { right: 40px; }
+
+        .body {
+            position: absolute;
+            width: 180px;
+            height: 160px;
+            background: var(--fur-color);
+            border-radius: 50% 50% 45% 45%;
+            bottom: 20px;
+            left: 60px;
+            z-index: 1;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1);
+        }
+        .belly {
+            position: absolute;
+            width: 100px;
+            height: 90px;
+            background: var(--belly-color);
+            border-radius: 50%;
+            top: 30px;
+            left: 40px;
+        }
+
+        .arm {
+            position: absolute;
+            width: 70px;
+            height: 100px;
+            background: var(--fur-color);
+            border-radius: 40px;
+            top: 180px;
+            z-index: 4;
+            transform-origin: top center;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .arm.left { left: 30px; transform: rotate(20deg); }
+        .arm.right { right: 30px; transform: rotate(-20deg); }
+
+        .leg {
+            position: absolute;
+            width: 70px;
+            height: 80px;
+            background: var(--fur-color);
+            border-radius: 40% 40% 50% 50%;
+            bottom: 0;
+            z-index: 4;
+        }
+        .leg.left { left: 50px; }
+        .leg.right { right: 50px; }
+        .paw-pad {
+            position: absolute;
+            width: 35px;
+            height: 30px;
+            background: var(--belly-color);
+            border-radius: 50%;
+            bottom: 15px;
+            left: 17.5px;
+        }
+
+        /* --- Heart Message --- */
+        .heart-held {
+            position: absolute;
+            width: 120px;
+            height: 110px;
+            background: var(--heart-red);
+            top: 210px;
+            left: 90px;
+            z-index: 5;
+            transform: rotate(-5deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            cursor: pointer;
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            mask-size: contain;
+            -webkit-mask-size: contain;
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+        }
+        .heart-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #ff4d6d, #d90429);
+        }
+        .heart-text {
+            position: relative;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 1.1;
+            padding: 10px;
+            z-index: 6;
+            pointer-events: none;
+            width: 85%;
+        }
+
+        /* --- THE NOTE --- */
+        .note-card {
+            background: rgba(255, 255, 255, 0.85); /* Slightly clearer */
+            width: 90%;
+            max-width: 500px;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 
+                0 10px 30px rgba(139, 69, 19, 0.1), /* Warmer shadow */
+                inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+            text-align: center;
+            z-index: 10;
+            margin-top: -20px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            animation: fadeUp 1s ease-out 0.5s forwards;
+            position: relative;
+        }
+        
+        .note-card::before {
+            content: '♥';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e63946;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .note-text {
+            color: var(--text-color);
+            font-size: 18px;
+            line-height: 1.6;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: #d00000;
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+        }
+
+        .signature {
+            font-family: 'Pacifico', cursive;
+            color: #8d5524;
+            font-size: 20px;
+            opacity: 0.9;
+        }
+
+        /* --- Animations --- */
+        @keyframes idleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes textPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Hug Logic Styles */
+        .hugging .arm.left { transform: rotate(45deg) translateX(10px); }
+        .hugging .arm.right { transform: rotate(-45deg) translateX(-10px); }
+        .hugging .eye { height: 3px; border-radius: 2px; top: 73px; }
+        .hugging .eye::after { display: none; }
+        .hugging .heart-held { transform: scale(1.1) rotate(0deg); }
+
+    </style>
+</head>
+<body>
+
+    <div class="cloud-bg c1"></div>
+    <div class="cloud-bg c2"></div>
+    <div class="cloud-bg c3"></div>
+
+    <div class="header">
+        <h1>Happy Teddy Day, Neenu!</h1><br>
+        <div class="subtitle">Tap the bear to squeeze 🧸</div>
+    </div>
+
+    <div class="teddy-wrapper">
+        <div class="teddy-container" id="teddy" onclick="giveHug()">
+            <div class="ear left"></div><div class="ear right"></div>
+            <div class="head">
+                <div class="eye left"></div><div class="eye right"></div>
+                <div class="blush left"></div><div class="blush right"></div>
+                <div class="snout"><div class="nose"></div><div class="mouth"></div></div>
+            </div>
+            <div class="body"><div class="belly"></div></div>
+            <div class="leg left"><div class="paw-pad"></div></div><div class="leg right"><div class="paw-pad"></div></div>
+            <div class="arm left"></div><div class="arm right"></div>
+            
+            <div class="heart-held">
+                <div class="heart-bg"></div>
+                <div class="heart-text" id="message">Hug Me!</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="note-card">
+        <p class="note-text">
+            To my favorite person,<br><br>
+            Just like a teddy bear, you bring so much <span class="highlight">comfort</span> and <span class="highlight">warmth</span> into my life. 
+            I wish I could be there to give you the biggest, tightest hug right now. 
+            <br><br>
+            Until then, keep this virtual bear close to remind you that you are always safe in my heart.
+        </p>
+        <div class="signature">Forever Yours, Arun ❤️</div>
+    </div>
+
+    <script>
+        const teddy = document.getElementById('teddy');
+        const messageEl = document.getElementById('message');
+        
+        // Romantic Messages
+        const messages = [
+            "You're my Home ❤️",
+             "My forever cuddle",          
+		    "You're my Life",
+            "I Love You!",
+            "Warmest Hugs",
+            "My cutie Neenu",
+            "Never letting go",
+            "You are magic ✨"
+        ];
+
+        let msgIndex = 0;
+
+        function giveHug() {
+            // 1. Trigger Animation Class
+            teddy.classList.add('hugging');
+            
+            // 2. Create Particle Explosion
+            createHearts();
+
+            // 3. Change Message with delay for "pop" effect
+            setTimeout(() => {
+                msgIndex = (msgIndex + 1) % messages.length;
+                messageEl.textContent = messages[msgIndex];
+                
+                // Reset animation for text
+                messageEl.classList.remove('pop-text');
+                void messageEl.offsetWidth; // Trigger reflow
+                messageEl.classList.add('pop-text');
+            }, 150);
+
+            // 4. Reset Hug State
+            setTimeout(() => {
+                teddy.classList.remove('hugging');
+            }, 600);
+        }
+
+        function createHearts() {
+            const rect = teddy.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 3;
+
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.left = centerX + 'px';
+                heart.style.top = centerY + 'px';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '100';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 120 + 60;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity - 60; 
+                
+                document.body.appendChild(heart);
+                
+                heart.animate([
+                    { transform: 'translate(0,0) scale(0)', opacity: 0 },
+                    { transform: 'translate(0,0) scale(1)', opacity: 1, offset: 0.1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0.5)`, opacity: 0 }
+                ], {
+                    duration: 1000,
+                    easing: 'ease-out'
+                });
+
+                setTimeout(() => heart.remove(), 1000);
+            }
+        }
+    </script>
+</body>
+</html>
