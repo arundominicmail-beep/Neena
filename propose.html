@@ -1,211 +1,772 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>For You</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>For Neenu ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+        :root {
+            --rose-gold: #b76e79;
+            --deep-rose: #c9184a;
+            --blush: #ff4d6d;
+            --cream: #fff0f3;
+            --champagne: #ffccd5;
+            --dark: #2d1e2f;
+        }
 
-<style>
-:root {
-    --bg: #0f172a;
-    --card: rgba(255,255,255,0.06);
-    --gold: #e7c88c;
-    --text: #f8fafc;
-    --muted: #cbd5e1;
-}
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background: #000;
+            min-height: 100vh;
+            position: relative;
+            touch-action: pan-y;
+        }
 
-* { box-sizing: border-box; }
+        /* Luxurious animated background */
+        .background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at top, #1a0a1e, #0a0014);
+        }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    background:
-        radial-gradient(ellipse at top, #1e293b, #020617),
-        linear-gradient(var(--bg), #020617);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Inter', sans-serif;
-    color: var(--text);
-    padding: 20px;
-}
+        .background::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(183, 110, 121, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 77, 109, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(201, 24, 74, 0.2) 0%, transparent 50%);
+            animation: backgroundFlow 20s ease-in-out infinite;
+        }
 
-.scene {
-    width: 100%;
-    max-width: 420px;
-    background: var(--card);
-    border-radius: 32px;
-    padding: 42px 28px;
-    text-align: center;
-    backdrop-filter: blur(14px);
-    box-shadow: 0 40px 120px rgba(0,0,0,0.6);
-    animation: fadeUp 1.2s ease forwards;
-}
+        @keyframes backgroundFlow {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-5%, 5%) rotate(120deg); }
+            66% { transform: translate(5%, -5%) rotate(240deg); }
+        }
 
-h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.1rem;
-    margin: 0 0 14px;
-    letter-spacing: 0.5px;
-}
+        /* Particle system */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-p {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: var(--muted);
-    margin-bottom: 36px;
-}
+        .particle {
+            position: absolute;
+            font-size: clamp(18px, 3vw, 28px);
+            opacity: 0;
+            filter: blur(0.5px);
+            animation: particleFloat 8s ease-in-out infinite;
+        }
 
-.divider {
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 24px auto 36px;
-}
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(120vh) translateX(0) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            20% {
+                transform: translateY(80vh) translateX(20px) rotate(90deg) scale(1);
+            }
+            80% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(-20px) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
 
-.buttons {
-    position: relative;
-    height: 68px;
-}
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(20px, 5vw, 40px);
+        }
 
-button {
-    position: absolute;
-    border: none;
-    border-radius: 999px;
-    padding: 14px 30px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.4s ease;
-}
+        /* Premium card design */
+        .card {
+            position: relative;
+            background: linear-gradient(135deg, 
+                rgba(255, 240, 243, 0.98) 0%, 
+                rgba(255, 204, 213, 0.95) 100%);
+            backdrop-filter: blur(30px);
+            border-radius: clamp(30px, 5vw, 50px);
+            padding: clamp(50px, 8vw, 80px) clamp(40px, 6vw, 60px);
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.5),
+                0 40px 100px rgba(201, 24, 74, 0.4),
+                0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: cardEntrance 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
 
-#yes {
-    background: linear-gradient(135deg, #f1dca7, #d6b36a);
-    color: #020617;
-    left: 50%;
-    transform: translateX(-110%);
-    box-shadow: 0 16px 40px rgba(214,179,106,0.45);
-}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.4) 0%, 
+                transparent 50%);
+            pointer-events: none;
+        }
 
-#yes:active {
-    transform: translateX(-110%) scale(0.97);
-}
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.6),
+                rgba(255, 204, 213, 0.3),
+                rgba(201, 24, 74, 0.4));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            animation: borderShimmer 3s ease-in-out infinite;
+        }
 
-#no {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid rgba(255,255,255,0.25);
-    left: 50%;
-    transform: translateX(20%);
-}
+        @keyframes borderShimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
 
-.final {
-    display: none;
-    animation: cinematicReveal 1.4s ease forwards;
-}
+        @keyframes cardEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.85) translateY(60px);
+            }
+            60% {
+                transform: scale(1.02) translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
 
-.final h1 {
-    font-size: 2.4rem;
-}
+        /* Typography */
+        .name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(52px, 12vw, 96px);
+            font-weight: 700;
+            background: linear-gradient(135deg, 
+                var(--deep-rose) 0%, 
+                var(--blush) 50%,
+                var(--rose-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: clamp(35px, 7vw, 55px);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            animation: nameGlow 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
 
-.signature {
-    margin-top: 36px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    color: var(--gold);
-}
+        @keyframes nameGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px rgba(201, 24, 74, 0.4));
+                transform: scale(1);
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(255, 77, 109, 0.6));
+                transform: scale(1.02);
+            }
+        }
 
-.heart {
-    position: fixed;
-    font-size: 20px;
-    animation: rise 5s linear infinite;
-    opacity: 0.7;
-}
+        .question {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 7vw, 52px);
+            font-weight: 600;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: clamp(45px, 9vw, 70px);
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+            position: relative;
+            z-index: 1;
+        }
 
-@keyframes rise {
-    from { transform: translateY(110vh); }
-    to { transform: translateY(-10vh); }
-}
+        /* Buttons container */
+        .buttons-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: clamp(100px, 20vw, 140px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
 
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        .buttons-container {
+            display: flex;
+            gap: clamp(20px, 4vw, 40px);
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-@keyframes cinematicReveal {
-    from { opacity: 0; letter-spacing: 6px; }
-    to { opacity: 1; letter-spacing: 0; }
-}
-</style>
+        button {
+            position: relative;
+            padding: clamp(18px, 3.5vw, 24px) clamp(45px, 9vw, 75px);
+            font-size: clamp(22px, 4.5vw, 32px);
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            border: none;
+            border-radius: clamp(40px, 8vw, 65px);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            outline: none;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            touch-action: manipulation;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, var(--deep-rose) 0%, var(--blush) 100%);
+            color: white;
+            box-shadow: 
+                0 12px 35px rgba(201, 24, 74, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            z-index: 2;
+        }
+
+        #yesBtn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #yesBtn:hover::before,
+        #yesBtn:active::before {
+            opacity: 1;
+        }
+
+        #yesBtn:hover {
+            transform: translateY(-10px) scale(1.08);
+            box-shadow: 
+                0 25px 60px rgba(201, 24, 74, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+        }
+
+        #yesBtn:active {
+            transform: translateY(-5px) scale(1.04);
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.9) 0%, 
+                rgba(255, 204, 213, 0.8) 100%);
+            color: var(--dark);
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(201, 24, 74, 0.2) inset;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Celebration screen */
+        .celebration {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: radial-gradient(ellipse at center, 
+                #c9184a 0%, 
+                #a4133c 50%,
+                #590d22 100%);
+            animation: celebrationReveal 1s ease-out;
+        }
+
+        @keyframes celebrationReveal {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(10px);
+            }
+        }
+
+        .celebration-content {
+            position: relative;
+            z-index: 2001;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(20px, 5vw, 60px);
+            text-align: center;
+            color: white;
+            overflow-y: auto;
+        }
+
+        .celebration-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(64px, 16vw, 130px);
+            font-weight: 700;
+            margin-bottom: clamp(25px, 5vw, 45px);
+            animation: titleBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 
+                0 0 30px rgba(255, 255, 255, 0.6),
+                0 5px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        @keyframes titleBounce {
+            0% {
+                transform: scale(0) rotate(-20deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.2) rotate(8deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .celebration-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(22px, 5vw, 40px);
+            font-weight: 300;
+            max-width: 950px;
+            line-height: 1.8;
+            margin-bottom: clamp(25px, 5vw, 40px);
+            animation: textFadeUp 1s ease-out both;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .celebration-text:nth-of-type(2) { animation-delay: 0.3s; }
+        .celebration-text:nth-of-type(3) { animation-delay: 0.6s; }
+
+        @keyframes textFadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hearts-display {
+            font-size: clamp(48px, 12vw, 90px);
+            margin: clamp(35px, 7vw, 70px) 0;
+            animation: textFadeUp 1s ease-out 0.9s both;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+        }
+
+        .quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(24px, 5.5vw, 42px);
+            font-style: italic;
+            font-weight: 300;
+            max-width: 900px;
+            line-height: 1.8;
+            margin-top: clamp(40px, 8vw, 70px);
+            animation: textFadeUp 1s ease-out 1.2s both;
+            opacity: 0.95;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Fireworks */
+        .fireworks {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1999;
+        }
+
+        .firework-particle {
+            position: absolute;
+            width: clamp(5px, 1.2vw, 10px);
+            height: clamp(5px, 1.2vw, 10px);
+            border-radius: 50%;
+            animation: fireworkExplosion 1.5s ease-out forwards;
+        }
+
+        @keyframes fireworkExplosion {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkleAnimation 2s ease-out forwards;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes sparkleAnimation {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .buttons-container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .particle {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 45px 30px;
+            }
+
+            .buttons-wrapper {
+                min-height: 120px;
+            }
+        }
+
+        /* Landscape mobile fix */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .container {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 35px 45px;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .name {
+                margin-bottom: 20px;
+            }
+
+            .question {
+                margin-bottom: 30px;
+            }
+
+            .buttons-wrapper {
+                min-height: 80px;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Background -->
+    <div class="background"></div>
 
-<div class="scene" id="question">
-    <h1>Neena</h1>
-    <div class="divider"></div>
-    <p>
-        In a world that never stops moving,<br>
-        you are my stillness.<br><br>
-        Will you be my Valentine?
-    </p>
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
 
-    <div class="buttons">
-        <button id="yes">Yes</button>
-        <button id="no">No</button>
+    <!-- Main screen -->
+    <div class="container" id="mainScreen">
+        <div class="card">
+            <h1 class="name">Neenu 💕</h1>
+            <p class="question">Will you be my Valentine? ❤️</p>
+            <div class="buttons-wrapper">
+                <div class="buttons-container">
+                    <button id="yesBtn">Yes! 💖</button>
+                    <button id="noBtn">No</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="scene final" id="answer">
-    <h1>It was always you.</h1>
-    <div class="divider"></div>
-    <p>
-        Not just today.<br>
-        Not just this year.<br><br>
-        But every version of tomorrow I dream of.
-    </p>
-
-    <div class="signature">
-        — Arun
+    <!-- Celebration screen -->
+    <div class="celebration" id="celebration">
+        <div class="fireworks" id="fireworks"></div>
+        <div class="celebration-content">
+            <h1 class="celebration-title">💖 YES! 💖</h1>
+            <p class="celebration-text">
+                You've just made me the happiest person in the entire universe!
+            </p>
+            <p class="celebration-text">
+                I can't wait to make this the most amazing, unforgettable, and magical time together with you, Neenu.
+            </p>
+            <p class="celebration-text">
+                You're my everything, and I'm so grateful you said yes! ✨
+            </p>
+            <div class="hearts-display">
+                💖 💝 💗 💕 ❤️ 🌹
+            </div>
+            <p class="quote">
+                "In all the world, there is no heart for me like yours.<br>
+                In all the world, there is no love for you like mine."
+            </p>
+        </div>
     </div>
-</div>
 
-<script>
-const noBtn = document.getElementById('no');
-const yesBtn = document.getElementById('yes');
-const question = document.getElementById('question');
-const answer = document.getElementById('answer');
+    <script>
+        // Particle system
+        const particlesContainer = document.getElementById('particles');
+        const particleEmojis = ['❤️', '💕', '💖', '💗', '💝', '🌹', '💐', '✨', '💫', '🦋'];
 
-function escapeNo() {
-    const x = Math.random() * 140 - 70;
-    const y = Math.random() * 50 - 25;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-}
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.textContent = particleEmojis[Math.floor(Math.random() * particleEmojis.length)];
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+            particlesContainer.appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 10000);
+        }
 
-noBtn.addEventListener('mouseenter', escapeNo);
-noBtn.addEventListener('touchstart', escapeNo);
+        // Create particles regularly
+        setInterval(createParticle, 350);
+        
+        // Initial burst
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createParticle, i * 100);
+        }
 
-yesBtn.addEventListener('click', () => {
-    question.style.display = 'none';
-    answer.style.display = 'block';
-    releaseHearts();
-});
+        // Button interactions
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mainScreen = document.getElementById('mainScreen');
+        const celebration = document.getElementById('celebration');
+        
+        let noInteractionCount = 0;
 
-function releaseHearts() {
-    for (let i = 0; i < 30; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.textContent = '✨';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = 4 + Math.random() * 3 + 's';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 6000);
-    }
-}
-</script>
+        // Handle both mouse and touch for "No" button
+        function handleNoInteraction(e) {
+            e.preventDefault();
+            noInteractionCount++;
+            
+            const wrapper = noBtn.closest('.buttons-wrapper');
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            // Calculate boundaries
+            const maxX = wrapperRect.width - btnRect.width - 40;
+            const maxY = wrapperRect.height - btnRect.height - 20;
+            
+            // Generate new random position
+            const newX = (Math.random() - 0.5) * maxX;
+            const newY = (Math.random() - 0.5) * maxY;
+            
+            // Scale down No button
+            const noScale = Math.max(0.5, 1 - (noInteractionCount * 0.08));
+            
+            // Scale up Yes button
+            const yesScale = Math.min(1.4, 1 + (noInteractionCount * 0.06));
+            
+            // Apply transforms
+            noBtn.style.transform = `translate(${newX}px, ${newY}px) scale(${noScale})`;
+            yesBtn.style.transform = `scale(${yesScale})`;
+            
+            // Create sparkle effect
+            const x = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+            const y = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+            createSparkles(x, y);
+        }
 
+        // Mouse events
+        noBtn.addEventListener('mouseenter', handleNoInteraction);
+        
+        // Touch events for mobile
+        noBtn.addEventListener('touchstart', handleNoInteraction, { passive: false });
+
+        // Prevent click on No button
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleNoInteraction(e);
+        });
+
+        // Create sparkle effect
+        function createSparkles(x, y) {
+            for (let i = 0; i < 10; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = x + 'px';
+                sparkle.style.top = y + 'px';
+                
+                const angle = (Math.PI * 2 / 10) * i;
+                const distance = 30 + Math.random() * 25;
+                
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    sparkle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(1) rotate(180deg)`;
+                }, 10);
+                
+                setTimeout(() => sparkle.remove(), 2000);
+            }
+        }
+
+        // Yes button click
+        yesBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create explosion effect
+            const rect = this.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            createHeartExplosion(centerX, centerY);
+            
+            // Transition to celebration
+            mainScreen.style.transition = 'opacity 0.8s, transform 0.8s';
+            mainScreen.style.opacity = '0';
+            mainScreen.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                mainScreen.style.display = 'none';
+                celebration.style.display = 'block';
+                startCelebration();
+            }, 800);
+        });
+
+        // Heart explosion effect
+        function createHeartExplosion(x, y) {
+            const hearts = ['❤️', '💕', '💖', '💗', '💝', '🌹', '✨', '💫'];
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'particle';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.position = 'fixed';
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+                heart.style.zIndex = '1500';
+                heart.style.pointerEvents = 'none';
+                heart.style.fontSize = (20 + Math.random() * 15) + 'px';
+                
+                const angle = (Math.PI * 2 / 30) * i;
+                const distance = 120 + Math.random() * 120;
+                const duration = 1.2 + Math.random() * 0.6;
+                
+                heart.style.animation = `fireworkExplosion ${duration}s ease-out forwards`;
+                heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), duration * 1000);
+            }
+        }
+
+        // Celebration effects
+        function startCelebration() {
+            // Continuous fireworks
+            setInterval(createFirework, 500);
+            
+            // Create immediate fireworks
+            for (let i = 0; i < 6; i++) {
+                setTimeout(createFirework, i * 150);
+            }
+        }
+
+        function createFirework() {
+            const fireworksContainer = document.getElementById('fireworks');
+            const colors = ['#ff6b9d', '#ffc371', '#ff5e62', '#2ec4b6', '#e4ff1a', '#ffccd5', '#ff4d6d', '#ff85a2'];
+            
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight * 0.7;
+            
+            const particleCount = window.innerWidth < 768 ? 18 : 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.boxShadow = `0 0 12px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                
+                const angle = (Math.PI * 2 / particleCount) * i;
+                const velocity = 70 + Math.random() * 90;
+                
+                particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+                
+                fireworksContainer.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        // Optimize performance on mobile
+        if (window.innerWidth < 768) {
+            setInterval(createParticle, 500);
+        }
+    </script>
 </body>
 </html>
