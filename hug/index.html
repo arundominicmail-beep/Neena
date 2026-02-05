@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>A Royal Embrace 🌹</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #2b0a16 0%, #1a050b 60%, #000 100%);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+        }
+
+        /* --- BACKGROUND ATMOSPHERE --- */
+        .dust-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .dust {
+            position: absolute;
+            background: radial-gradient(white, transparent);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 10s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+        }
+
+        /* --- THE WAX SEAL BUTTON --- */
+        .seal-container {
+            position: relative;
+            z-index: 20;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .seal-container:hover {
+            transform: scale(1.05);
+        }
+
+        .wax-seal {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #d4af37, #aa8c2c, #5c4b18);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.2),
+                0 0 0 8px rgba(170, 140, 44, 0.3);
+            position: relative;
+            border: 2px solid #ffd700;
+        }
+
+        /* The 'S' or Heart on the seal */
+        .seal-imprint {
+            font-family: 'Great Vibes', cursive;
+            font-size: 60px;
+            color: #3e2e04;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.2), -1px -1px 0 rgba(0,0,0,0.3);
+            transform: rotate(-5deg);
+        }
+
+        .seal-text {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 3px;
+            color: #d4af37;
+            text-transform: uppercase;
+            white-space: nowrap;
+            opacity: 0.8;
+            transition: opacity 0.5s;
+        }
+
+        .seal-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid #d4af37;
+            animation: ripple 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes ripple {
+            0% { width: 100%; height: 100%; opacity: 0.6; }
+            100% { width: 200%; height: 200%; opacity: 0; }
+        }
+
+        /* --- THE VINES (SVG) --- */
+        .vines-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            /* To ensure vines are visible on mobile */
+            overflow: visible; 
+        }
+
+        .vine-path {
+            fill: none;
+            stroke: url(#goldGradient);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000; /* Hidden initially */
+            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+        }
+
+        /* --- ROSES --- */
+        .rose {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #ff0a43, #8a001f);
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transform: scale(0); /* Hidden */
+            z-index: 15;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Rose Petal Detail */
+        .rose::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            transform: rotate(45deg);
+        }
+        
+        .rose.bloom {
+            transform: scale(1) rotate(0deg);
+            animation: rosePulse 3s infinite ease-in-out;
+        }
+
+        @keyframes rosePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* --- FALLING PETALS --- */
+        .petal {
+            position: absolute;
+            background: #d90429;
+            width: 15px;
+            height: 15px;
+            border-radius: 15px 0 15px 0;
+            opacity: 0;
+            z-index: 5;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* --- MESSAGE --- */
+        .message-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            text-align: center;
+            opacity: 0;
+            z-index: 50;
+            transition: all 1.5s ease;
+            width: 90%;
+            max-width: 600px;
+            background: rgba(43, 10, 22, 0.8);
+            padding: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .message-card.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .main-msg {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(40px, 8vw, 65px);
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            line-height: 1.2;
+        }
+
+        .sub-msg {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #fce4ec;
+            margin-bottom: 30px;
+        }
+
+        .signature {
+            font-family: 'Cinzel', serif;
+            color: #d4af37;
+            letter-spacing: 3px;
+            font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            display: inline-block;
+        }
+
+        /* --- ANIMATION CLASSES --- */
+        .grow-vine {
+            animation: grow 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes grow {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+            pointer-events: none;
+            transform: scale(0.8);
+        }
+
+    </style>
+</head>
+<body>
+
+    <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#bf953f;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#fcf6ba;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#b38728;stop-opacity:1" />
+        </linearGradient>
+    </svg>
+
+    <div class="dust-container" id="dustContainer"></div>
+
+    <div class="seal-container" id="sealBtn" onclick="openEmbrace()">
+        <div class="seal-ripple"></div>
+        <div class="wax-seal">
+            <div class="seal-imprint">N</div>
+        </div>
+        <div class="seal-text">Break to Accept</div>
+    </div>
+
+    <svg class="vines-layer" id="vinesSvg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M -10 100 Q 10 50 50 65" class="vine-path" id="leftVine" />
+        <path d="M 110 100 Q 90 50 50 65" class="vine-path" id="rightVine" />
+        
+        <path d="M -10 20 Q 20 20 45 40" class="vine-path" id="leftUpper" />
+        <path d="M 110 20 Q 80 20 55 40" class="vine-path" id="rightUpper" />
+    </svg>
+
+    <div id="rosesContainer"></div>
+
+    <div class="message-card" id="finalCard">
+        <div class="main-msg">Wrapped in Love</div>
+        <div class="sub-msg">
+            Even when I am not there,<br>
+            my heart wraps around yours, protecting you,<br>
+            loving you, holding you tight.
+        </div>
+        <div class="signature">Happy Hug Day, Neenu</div>
+    </div>
+
+    <script>
+        // 1. Generate Dust
+        const dustContainer = document.getElementById('dustContainer');
+        for(let i=0; i<30; i++) {
+            const d = document.createElement('div');
+            d.className = 'dust';
+            d.style.left = Math.random() * 100 + '%';
+            d.style.top = Math.random() * 100 + '%';
+            const size = Math.random() * 3 + 1 + 'px';
+            d.style.width = size;
+            d.style.height = size;
+            d.style.animationDelay = Math.random() * 5 + 's';
+            dustContainer.appendChild(d);
+        }
+
+        function openEmbrace() {
+            // 1. Fade out Seal
+            const seal = document.getElementById('sealBtn');
+            seal.classList.add('fade-out');
+
+            // 2. Animate Vines (The Hug)
+            // Left & Right Arms
+            document.getElementById('leftVine').classList.add('grow-vine');
+            document.getElementById('rightVine').classList.add('grow-vine');
+            
+            // Wait slightly then upper decorative vines
+            setTimeout(() => {
+                document.getElementById('leftUpper').classList.add('grow-vine');
+                document.getElementById('rightUpper').classList.add('grow-vine');
+            }, 500);
+
+            // 3. Bloom Roses Sequence
+            // We define percentage positions along the "Arms" to place roses
+            // Coordinates based roughly on SVG paths logic relative to viewport %
+            
+            const rosePositions = [
+                {left: '10%', top: '80%', delay: 500},
+                {left: '90%', top: '80%', delay: 500},
+                {left: '20%', top: '65%', delay: 1000},
+                {left: '80%', top: '65%', delay: 1000},
+                {left: '35%', top: '60%', delay: 1500}, // Near center
+                {left: '65%', top: '60%', delay: 1500}, // Near center
+                {left: '50%', top: '65%', delay: 2200, big: true} // Center Heart
+            ];
+
+            rosePositions.forEach(pos => {
+                setTimeout(() => {
+                    createRose(pos.left, pos.top, pos.big);
+                }, pos.delay);
+            });
+
+            // 4. Petal Rain
+            setTimeout(() => {
+                startPetalRain();
+            }, 1000);
+
+            // 5. Show Message
+            setTimeout(() => {
+                document.getElementById('finalCard').classList.add('show');
+            }, 3000);
+        }
+
+        function createRose(left, top, isBig) {
+            const rose = document.createElement('div');
+            rose.className = 'rose';
+            rose.style.left = left;
+            rose.style.top = top;
+            if (isBig) {
+                rose.style.transform = 'scale(1.5)';
+                rose.style.zIndex = '20';
+            }
+            document.getElementById('rosesContainer').appendChild(rose);
+            
+            // Trigger bloom (small delay to allow DOM insert)
+            requestAnimationFrame(() => {
+                rose.classList.add('bloom');
+            });
+        }
+
+        function startPetalRain() {
+            setInterval(() => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.top = '-20px';
+                petal.style.opacity = '1';
+                
+                // Randomize rotation animation
+                const duration = Math.random() * 3 + 3;
+                
+                document.body.appendChild(petal);
+                
+                petal.animate([
+                    { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+                    { transform: `translate(${Math.random()*100 - 50}px, 100vh) rotate(${Math.random()*360}deg)`, opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'linear'
+                });
+
+                setTimeout(() => petal.remove(), duration * 1000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
