@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Neenu ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap');
+
+        :root {
+            --primary-color: #ff0a54;
+            --accent-color: #ff477e;
+            --text-color: #fce7f3;
+            /* Dynamic height variable for mobile browsers */
+            --vh: 100vh;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none; /* Prevents text selection on tapping */
+            -webkit-tap-highlight-color: transparent; /* Removes blue tap box on Android */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Fallback */
+            height: calc(var(--vh, 1vh) * 100);
+            background: radial-gradient(circle at center, #1a050b 0%, #000000 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+
+        /* --- BACKGROUND CANVAS --- */
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- STAGE 1: The Beating Heart --- */
+        .intro-container {
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.8s ease-out;
+            position: relative;
+        }
+
+        .heart-btn {
+            font-size: clamp(4rem, 15vw, 6rem); /* Responsive font size */
+            color: var(--primary-color);
+            filter: drop-shadow(0 0 25px rgba(255, 10, 84, 0.6));
+            animation: heartbeat 1.5s ease-in-out infinite;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .heart-btn:active {
+            transform: scale(0.9);
+        }
+
+        .intro-text {
+            margin-top: 20px;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.8);
+            animation: fadePulse 2s infinite;
+            text-transform: uppercase;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+        
+        @keyframes fadePulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* --- STAGE 2: The Letter --- */
+        .card-container {
+            position: absolute;
+            width: 85%;
+            max-width: 500px;
+            background: rgba(20, 5, 10, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: clamp(20px, 5vw, 40px);
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            text-align: center;
+            z-index: 20;
+        }
+
+        .card-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.2rem, 8vw, 3rem);
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 20px 0;
+            line-height: 1.2;
+        }
+
+        .message-body {
+            font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+            line-height: 1.6;
+            color: var(--text-color);
+            min-height: 120px;
+            text-align: left;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: var(--accent-color);
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border: none;
+            padding: 12px 40px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 10, 84, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+            display: none;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(10px);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-yes.show {
+            display: block;
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .btn-yes:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- STAGE 3: Final Message --- */
+        .final-msg {
+            display: none;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 12vw, 5rem);
+            color: #fff;
+            text-shadow: 0 0 30px var(--primary-color);
+            z-index: 30;
+            text-align: center;
+            animation: scaleIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .sub-msg {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            font-family: 'Poppins', sans-serif;
+            margin-top: 15px;
+            color: #ffccd5;
+            opacity: 0.9;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="intro-container" id="intro" onclick="startExperience()">
+        <div class="heart-btn">❤️</div>
+        <div class="intro-text">Tap to Open</div>
+    </div>
+
+    <div class="card-container" id="card">
+        <h1>My Dearest Neenu,</h1>
+        <div class="message-body">
+            <span id="text-target"></span><span class="cursor" id="cursor"></span>
+        </div>
+        <button class="btn-yes" id="yesBtn" onclick="celebrate()">Yes, I will ❤️</button>
+    </div>
+
+    <div class="final-msg" id="final">
+        <div>Forever Yours</div>
+        <div class="sub-msg">- Love, Arun</div>
+    </div>
+
+    <script>
+        // --- MOBILE HEIGHT FIX ---
+        // This ensures the 100vh actually fills the screen on mobile browsers
+        function setVh() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        window.addEventListener('resize', setVh);
+        setVh();
+
+        // --- CANVAS ENGINE ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        let state = 'ambient'; // 'ambient' or 'celebrate'
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // --- PARTICLE CLASS ---
+        class Particle {
+            constructor(type = 'circle') {
+                this.type = type; // 'circle' or 'heart'
+                this.init();
+            }
+
+            init() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 100;
+                this.size = Math.random() * 3 + 1; // Base size
+                
+                // Physics properties
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.wobble = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = Math.random() * 0.05 + 0.02;
+                this.opacity = Math.random() * 0.5 + 0.3;
+                
+                if (this.type === 'heart') {
+                    this.size = Math.random() * 20 + 10;
+                    this.speedY = Math.random() * 3 + 2;
+                    this.color = `hsla(${Math.random() * 40 + 330}, 90%, 60%, ${this.opacity})`;
+                } else {
+                    this.color = `rgba(255, 77, 109, ${this.opacity})`;
+                }
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += Math.sin(this.wobble) * 0.5;
+                this.wobble += this.wobbleSpeed;
+
+                // Reset if out of screen
+                if (this.y < -50) {
+                    if (state === 'celebrate' && this.type === 'heart') {
+                        // Don't reset hearts immediately during celebration to prevent popping
+                        this.init(); 
+                    } else {
+                        this.init();
+                    }
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                
+                if (this.type === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (this.type === 'heart') {
+                    ctx.font = `${this.size}px serif`;
+                    ctx.fillText("❤️", this.x, this.y);
+                }
+            }
+        }
+
+        // Initialize Ambient Particles
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 60; i++) { // 60 background particles
+                particles.push(new Particle('circle'));
+            }
+        }
+        initParticles();
+
+        // --- ANIMATION LOOP ---
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- INTERACTION LOGIC ---
+        function startExperience() {
+            const intro = document.getElementById('intro');
+            const card = document.getElementById('card');
+            
+            // Fade out intro
+            intro.style.opacity = '0';
+            intro.style.pointerEvents = 'none';
+
+            setTimeout(() => {
+                intro.style.display = 'none';
+                card.style.display = 'block';
+                
+                // Force Reflow
+                void card.offsetWidth;
+                card.classList.add('visible');
+                
+                setTimeout(typeWriter, 800);
+            }, 800);
+        }
+
+        // --- TYPING LOGIC ---
+        const message = "Some people wait a lifetime to find their soulmate, but I was lucky enough to find you. You are my happiness, my peace, and my future. Will you be my Valentine today, and my wife tomorrow?";
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < message.length) {
+                const char = message.charAt(i);
+                document.getElementById("text-target").innerHTML += char;
+                i++;
+                // Randomize typing speed for realism
+                const randomSpeed = Math.random() * 30 + 30; 
+                setTimeout(typeWriter, randomSpeed);
+            } else {
+                document.getElementById("cursor").style.display = 'none';
+                document.getElementById('yesBtn').classList.add('show');
+            }
+        }
+
+        // --- CELEBRATION LOGIC ---
+        function celebrate() {
+            const card = document.getElementById('card');
+            const final = document.getElementById('final');
+            
+            state = 'celebrate';
+
+            // Transition Card
+            card.style.transform = 'scale(0.9) translateY(-20px)';
+            card.style.opacity = '0';
+            
+            setTimeout(() => {
+                card.style.display = 'none';
+                final.style.display = 'block';
+                
+                // Explode Hearts!
+                addHeartParticles();
+            }, 600);
+        }
+
+        function addHeartParticles() {
+            // Add 100 floating hearts
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    particles.push(new Particle('heart'));
+                }, i * 20); // Stagger creation
+            }
+        }
+    </script>
+</body>
+</html>
