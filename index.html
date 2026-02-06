@@ -10,15 +10,10 @@
             --primary-color: #ff4d6d;
             --secondary-color: #ff8fa3;
             --bg-gradient: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --locked-gray: #a0a0a0;
+            --card-bg: rgba(255, 255, 255, 0.95);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Nunito', sans-serif;
@@ -33,21 +28,17 @@
         header {
             text-align: center;
             margin-bottom: 3rem;
-            animation: fadeInDown 1s ease-out;
+            animation: fadeIn 1s ease-out;
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
             color: var(--primary-color);
             font-size: 3.5rem;
-            margin-bottom: 0.5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        p.subtitle {
-            color: #666;
-            font-size: 1.1rem;
-        }
+        p.subtitle { color: #666; font-size: 1.1rem; margin-top: 0.5rem; }
 
         .grid-container {
             display: grid;
@@ -55,10 +46,8 @@
             gap: 2rem;
             width: 100%;
             max-width: 1200px;
-            padding: 0 1rem;
         }
 
-        /* Card Styles */
         .card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -67,103 +56,53 @@
             text-decoration: none;
             color: #333;
             position: relative;
-            overflow: hidden;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
-            border: 2px solid transparent;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 300px;
+            min-height: 320px;
+            border: 2px solid transparent;
         }
 
-        /* Open State */
-        .card.open {
-            border-color: var(--secondary-color);
-        }
-
-        .card.open:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(255, 77, 109, 0.3);
-        }
+        /* Unlocked State */
+        .card.open { border-color: var(--secondary-color); }
+        .card.open:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(255, 77, 109, 0.3); }
 
         /* Locked State */
         .card.locked {
-            background: #e0e0e0;
-            cursor: not-allowed;
-            filter: grayscale(0.8);
-            pointer-events: none; /* Prevents clicking */
+            background: #e6e6e6;
+            cursor: default;
+            filter: grayscale(1);
+            opacity: 0.8;
         }
 
-        .card-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .card-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .card-date {
-            font-weight: 700;
-            color: #555;
-            margin-bottom: 1rem;
-            display: block;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
+        .card-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .card-title { font-family: 'Dancing Script', cursive; font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .card-date { font-weight: 700; color: #555; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 1rem; }
 
         .status-badge {
-            display: inline-block;
             padding: 0.5rem 1.2rem;
             border-radius: 50px;
             font-size: 0.9rem;
             font-weight: bold;
-            transition: all 0.3s ease;
+            margin-top: auto;
         }
 
-        .card.open .status-badge {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.4);
-        }
+        .card.open .status-badge { background: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.4); }
+        .card.locked .status-badge { background: #999; color: white; }
 
-        .card.locked .status-badge {
-            background: #888;
-            color: white;
-        }
-
-        /* Lock Overlay Icon */
-        .lock-overlay {
+        .lock-icon {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             font-size: 1.5rem;
-            color: #666;
-            opacity: 0;
+            color: #777;
         }
 
-        .card.locked .lock-overlay {
-            opacity: 1;
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .grid-container { grid-template-columns: 1fr; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -173,112 +112,87 @@
         <p class="subtitle">Our Valentine's Week Journey</p>
     </header>
 
-    <div class="grid-container" id="cards-container">
-        </div>
+    <div class="grid-container" id="cards-container"></div>
 
     <script>
-        // Configuration for the week
-        // Note: Months are 0-indexed in JavaScript (0 = Jan, 1 = Feb)
+        // Here, the URLs are "Base64 Encoded". 
+        // If someone views source, they just see random letters (e.g., "aHR0cHM...").
+        // The browser decodes them automatically using atob() ONLY when needed.
+        
         const timeline = [
             {
                 title: "Rose Day",
                 date: new Date(2026, 1, 7), // Feb 7
-                url: "https://neena-arun.in/rose/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL3Jvc2Uv", // Encoded URL
                 icon: "🌹",
                 desc: "A beginning with a bloom."
             },
             {
                 title: "Propose Day",
                 date: new Date(2026, 1, 8), // Feb 8
-                url: "https://neena-arun.in/propose/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL3Byb3Bvc2Uv",
                 icon: "💍",
                 desc: "A question from the heart."
             },
             {
                 title: "Chocolate Day",
                 date: new Date(2026, 1, 9), // Feb 9
-                url: "https://neena-arun.in/chocolate/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL2Nob2NvbGF0ZS8=",
                 icon: "🍫",
                 desc: "Sweeter than the rest."
             },
             {
                 title: "Teddy Day",
                 date: new Date(2026, 1, 10), // Feb 10
-                url: "https://neena-arun.in/teddy/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL3RlZGR5Lw==",
                 icon: "🧸",
                 desc: "Cute and cuddly love."
             },
             {
                 title: "Promise Day",
                 date: new Date(2026, 1, 11), // Feb 11
-                url: "https://neena-arun.in/promise/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL3Byb21pc2Uv",
                 icon: "🤞",
                 desc: "Forever and always."
             },
             {
                 title: "Hug Day",
                 date: new Date(2026, 1, 12), // Feb 12
-                url: "https://neena-arun.in/hug/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL2h1Zy8=",
                 icon: "🫂",
                 desc: "Warmth of your arms."
             },
             {
                 title: "Kiss Day",
                 date: new Date(2026, 1, 13), // Feb 13
-                url: "https://neena-arun.in/kiss/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL2tpc3Mv",
                 icon: "💋",
                 desc: "Sealed with love."
             },
             {
                 title: "Valentine's Day",
                 date: new Date(2026, 1, 14), // Feb 14
-                url: "https://neena-arun.in/valentines-day/",
+                encUrl: "aHR0cHM6Ly9uZWVuYS1hcnVuLmluL3ZhbGVudGluZXMtZGF5Lw==",
                 icon: "💘",
                 desc: "The day of love."
             }
         ];
 
         const container = document.getElementById('cards-container');
-        
-        // Get current date (set time to 00:00:00 to ensure comparing dates only)
         const now = new Date();
-        now.setHours(0,0,0,0);
+        now.setHours(0,0,0,0); // Compare dates only, ignoring time
 
         timeline.forEach(item => {
-            // Create Card Element
             const card = document.createElement('a');
-            
-            // Check if unlocked
-            // Unlock if today is equal to or after the target date
             const isUnlocked = now >= item.date;
-
-            // Format date for display (e.g., "Feb 7")
             const dateStr = item.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-            // Apply classes
             card.className = `card ${isUnlocked ? 'open' : 'locked'}`;
-            
-            // Set Link (only works if unlocked effectively, but good for SEO/HREF)
+
+            // LOGIC: If unlocked, decode the scrambled URL using atob() and set the href.
+            // If locked, do NOT set href.
             if (isUnlocked) {
-                card.href = item.url;
-            } else {
-                card.removeAttribute('href'); // Removes clickable link behavior
-            }
-
-            // Determine Status Text
-            const statusText = isUnlocked ? "Click to Open" : `Opens on ${dateStr}`;
-
-            card.innerHTML = `
-                <div class="lock-overlay">${isUnlocked ? '' : '🔒'}</div>
-                <span class="card-date">${dateStr}</span>
-                <span class="card-icon">${item.icon}</span>
-                <h2 class="card-title">${item.title}</h2>
-                <p style="margin-bottom:1.5rem; font-size:0.9rem;">${item.desc}</p>
-                <div class="status-badge">${statusText}</div>
-            `;
-
-            container.appendChild(card);
-        });
-    </script>
-</body>
-</html>
+                try {
+                    card.href = atob(item.encUrl); 
+                } catch(e) {
+                    console.
