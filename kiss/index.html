@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Delivery for Neenu ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            color: #d63384;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 90%;
+            width: 400px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #e91e63;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .map-visual {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .location {
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .location span {
+            font-size: 1.5rem;
+        }
+
+        .route-line {
+            flex-grow: 1;
+            height: 2px;
+            background: #ddd;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .traveling-heart {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            font-size: 1.2rem;
+            transition: left 2.5s ease-in-out;
+        }
+
+        .btn-main {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Nunito', sans-serif;
+            font-weight: bold;
+        }
+
+        .btn-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        /* Hidden Content */
+        .delivery-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .kisses-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .kiss {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatUp 4s linear forwards;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        .note {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 1rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="card">
+        <div id="stage1">
+            <h1>Incoming Delivery!</h1>
+            <p>A package is arriving from <strong>Bangalore</strong>...</p>
+            
+            <div class="map-visual">
+                <div class="location">
+                    <span>🏙️</span>
+                    Blr
+                </div>
+                <div class="route-line">
+                    <div class="traveling-heart" id="travelHeart">❤️</div>
+                </div>
+                <div class="location">
+                    <span>🏡</span>
+                    Indore
+                </div>
+            </div>
+
+            <p id="status-text">Distance: 1300km...</p>
+            <button class="btn-main" onclick="startDelivery()">Track Package</button>
+        </div>
+
+        <div id="stage2" class="delivery-content">
+            <h1>It's Here!</h1>
+            <p>This parcel contains 1,000,000 virtual kisses exclusively for <strong>Neenu</strong>.</p>
+            <button class="btn-main" onclick="openPackage()">Claim Kisses 💋</button>
+        </div>
+
+        <div id="stage3" class="delivery-content">
+            <h1>Happy Kiss Day! 😘</h1>
+            <p>Until I can kiss you for real, I'm sending you all my love through the screen.</p>
+            <p><em>"One day closer to being your husband."</em></p>
+            <div class="note">- Love, Arun</div>
+        </div>
+    </div>
+
+    <div class="kisses-container" id="kissesContainer"></div>
+
+    <script>
+        function startDelivery() {
+            const heart = document.getElementById('travelHeart');
+            const status = document.getElementById('status-text');
+            const btn = document.querySelector('#stage1 .btn-main');
+            
+            btn.style.display = 'none'; // Hide button
+            status.innerHTML = "Transit in progress...";
+            
+            // Animate heart
+            heart.style.left = 'calc(100% - 20px)';
+            
+            setTimeout(() => {
+                status.innerHTML = "Arrived in Indore!";
+                setTimeout(() => {
+                    document.getElementById('stage1').style.display = 'none';
+                    const stage2 = document.getElementById('stage2');
+                    stage2.style.display = 'block';
+                    // Trigger reflow
+                    void stage2.offsetWidth;
+                    stage2.style.opacity = '1';
+                }, 1000);
+            }, 2500);
+        }
+
+        function openPackage() {
+            document.getElementById('stage2').style.display = 'none';
+            const stage3 = document.getElementById('stage3');
+            stage3.style.display = 'block';
+            void stage3.offsetWidth;
+            stage3.style.opacity = '1';
+
+            // Launch Confetti Kisses
+            for(let i=0; i<30; i++) {
+                createKiss();
+            }
+            setInterval(createKiss, 300); // Keep them coming
+        }
+
+        function createKiss() {
+            const kiss = document.createElement('div');
+            kiss.classList.add('kiss');
+            kiss.innerHTML = '💋';
+            kiss.style.left = Math.random() * 100 + 'vw';
+            kiss.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            
+            document.getElementById('kissesContainer').appendChild(kiss);
+
+            // Cleanup
+            setTimeout(() => {
+                kiss.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
