@@ -195,4 +195,26 @@
                 try {
                     card.href = atob(item.encUrl); 
                 } catch(e) {
-                    console.
+                    console.error("Error decoding URL");
+                }
+            } else {
+                card.removeAttribute('href');
+            }
+
+            const statusText = isUnlocked ? "Click to Open" : `Opens ${dateStr}`;
+            const lockIcon = isUnlocked ? '' : '<div class="lock-icon">🔒</div>';
+
+            card.innerHTML = `
+                ${lockIcon}
+                <span class="card-date">${dateStr}</span>
+                <span class="card-icon">${item.icon}</span>
+                <h2 class="card-title">${item.title}</h2>
+                <p style="margin-bottom:1.5rem; font-size:0.9rem;">${item.desc}</p>
+                <div class="status-badge">${statusText}</div>
+            `;
+
+            container.appendChild(card);
+        });
+    </script>
+</body>
+</html>
