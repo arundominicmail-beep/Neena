@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Union | Arun & Neenu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. RESET & VARIABLES --- */
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F9E59E;
+            --gold-shadow: #8a7018;
+            --deep-green: #1A2E22;
+            --cream: #FDFBF7;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            --text-main: #2C3E50;
+            --text-light: #FDFBF7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--deep-green);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* --- 2. DYNAMIC BACKGROUND --- */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--deep-green) 90%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- 3. LAYOUT & TYPOGRAPHY --- */
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            margin-bottom: 0.2em;
+            text-align: center;
+            line-height: 1.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        .scripture {
+            font-family: 'Cinzel', serif;
+            font-style: italic;
+            font-size: 0.9rem;
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 4rem;
+            opacity: 0.8;
+            border-left: 3px solid var(--gold);
+            padding-left: 20px;
+        }
+
+        /* --- 4. CARD COMPONENT (Glassmorphism) --- */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            perspective: 1000px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) rotateX(2deg);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border-color: var(--gold);
+        }
+
+        .event-label {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .event-date {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #ddd;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* --- 5. COUNTDOWN GRID --- */
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 15px 5px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .number {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cream);
+        }
+
+        .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            color: var(--gold);
+        }
+
+        /* --- 6. CELEBRATION MODE (Hidden by default) --- */
+        .celebration-wrapper {
+            display: none; /* Toggled by JS */
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            animation: fadeIn 3s ease;
+        }
+
+        .frame {
+            position: relative;
+            padding: 20px;
+            background: linear-gradient(45deg, var(--gold), #F9E59E, var(--gold));
+            border-radius: 4px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            transform: rotate(-2deg);
+        }
+
+        .photo-inner {
+            background: white;
+            padding: 15px;
+            padding-bottom: 80px; /* Polaroid style */
+        }
+
+        .couple-photo {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: sepia(20%);
+        }
+
+        .photo-caption {
+            font-family: 'Great Vibes', cursive;
+            color: #333;
+            font-size: 2.5rem;
+            position: absolute;
+            bottom: 25px;
+            width: 100%;
+            text-align: center;
+            left: 0;
+        }
+
+        .married-text {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 5px;
+        }
+
+        .bible-quote-final {
+            text-align: center;
+            font-style: italic;
+            max-width: 500px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        /* --- 7. UTILITIES & ANIMATIONS --- */
+        .hidden { display: none !important; }
+        
+        .divider {
+            height: 100px;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            margin: 40px 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--deep-green); }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+
+        footer {
+            margin-top: auto;
+            padding: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Cross Icon */
+        .cross-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            opacity: 0.5;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3.5rem; }
+            .card-container { flex-direction: column; align-items: center; }
+            .glass-card { width: 95%; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-bg"></canvas>
+    <div class="overlay"></div>
+
+    <div class="wrapper">
+        <div class="cross-icon">✝</div>
+        <h1>Arun &nbsp; & &nbsp; Neenu</h1>
+        <h2 id="main-subtitle">The Journey Home</h2>
+
+        <div class="scripture">
+            "I have found the one whom my soul loves."<br>— Song of Solomon 3:4
+        </div>
+
+        <div class="card-container" id="countdown-section">
+            
+            <div class="glass-card" id="card-engagement">
+                <div class="event-label">The Engagement</div>
+                <div class="event-date">August 22, 2026</div>
+                <div class="timer-grid">
+                    <div class="time-box"><span class="number" id="e-days">00</span><span class="label">Days</span></div>
+                    <div class="time-box"><span class="number" id="e-hours">00</span><span class="label">Hours</span></div>
+                    <div class="time-box"><span class="number" id="e-mins">00</span><span class="label">Mins</span></div>
+                    <div class="time-box"><span class="number" id="e-secs">00</span><span class="label">Secs</span></div>
+                </div>
+            </div>
+
+            <div class="glass-card" id="card-wedding">
+                <div class="event-label">The Wedding</div>
+                <div class="event-date">August 29, 2026</div>
+                <div class="timer-grid">
+                    <div class="time-box"><span class="number" id="w-days">00</span><span class="label">Days</span></div>
+                    <div class="time-box"><span class="number" id="w-hours">00</span><span class="label">Hours</span></div>
+                    <div class="time-box"><span class="number" id="w-mins">00</span><span class="label">Mins</span></div>
+                    <div class="time-box"><span class="number" id="w-secs">00</span><span class="label">Secs</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="celebration-wrapper" id="celebration-section">
+            <div class="married-text">MR. & MRS. ARUN</div>
+            
+            <div class="frame">
+                <div class="photo-inner">
+                    <img src="https://images.unsplash.com/photo-1511285560982-1351cdeb9821?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="couple-photo" alt="Wedding Couple">
+                    <div class="photo-caption">Forever Begins Now</div>
+                </div>
+            </div>
+
+            <div class="bible-quote-final">
+                "Two are better than one... if either of them falls down, one can help the other up."<br>— Ecclesiastes 4:9-10
+            </div>
+        </div>
+
+        <footer>
+            Built with Love • 2026
+        </footer>
+    </div>
+
+    <script>
+        /**
+         * --------------------------------------------------------------------------
+         * PART 1: PARTICLE ENGINE (Divine Light Effect)
+         * --------------------------------------------------------------------------
+         */
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * -0.5 - 0.2; // Move upwards
+                this.color = `rgba(212, 175, 55, ${Math.random() * 0.5})`; // Gold dust
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.1) this.size -= 0.005; // Fade out
+
+                // Reset if off screen or too small
+                if (this.y < 0 || this.size <= 0.1) {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height;
+                    this.size = Math.random() * 3;
+                    this.speedY = Math.random() * -0.5 - 0.2;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+
+        /**
+         * --------------------------------------------------------------------------
+         * PART 2: SUPREME DATE LOGIC
+         * --------------------------------------------------------------------------
+         */
+        
+        // CONFIGURE DATES HERE (Year, Month Index 0-11, Day, Hour, Min)
+        // August = 7
+        const ENGAGEMENT_DATE = new Date(2026, 7, 22, 10, 0, 0).getTime();
+        const WEDDING_DATE = new Date(2026, 7, 29, 10, 30, 0).getTime();
+
+        const dom = {
+            wrapper: document.querySelector('.wrapper'),
+            countSection: document.getElementById('countdown-section'),
+            celebSection: document.getElementById('celebration-section'),
+            cardEng: document.getElementById('card-engagement'),
+            cardWed: document.getElementById('card-wedding'),
+            subtitle: document.getElementById('main-subtitle')
+        };
+
+        function formatNum(num) {
+            return num < 10 ? `0${num}` : num;
+        }
+
+        function updateTimerDisplay(distance, prefix) {
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById(`${prefix}-days`).innerText = formatNum(days);
+            document.getElementById(`${prefix}-hours`).innerText = formatNum(hours);
+            document.getElementById(`${prefix}-mins`).innerText = formatNum(mins);
+            document.getElementById(`${prefix}-secs`).innerText = formatNum(secs);
+        }
+
+        function heartBeat() {
+            const now = new Date().getTime();
+
+            // SCENARIO 1: WEDDING PASSED -> CELEBRATION MODE
+            if (now > WEDDING_DATE) {
+                if (!dom.countSection.classList.contains('hidden')) {
+                    dom.countSection.classList.add('hidden');
+                    dom.celebSection.style.display = 'flex'; // Trigger flex
+                    dom.subtitle.innerText = "United in Christ";
+                }
+                return; // Stop processing timers
+            }
+
+            // SCENARIO 2: ENGAGEMENT PASSED -> HIDE ENGAGEMENT CARD
+            if (now > ENGAGEMENT_DATE) {
+                if (!dom.cardEng.classList.contains('hidden')) {
+                    dom.cardEng.classList.add('hidden');
+                }
+            } else {
+                // Update Engagement Timer
+                updateTimerDisplay(ENGAGEMENT_DATE - now, 'e');
+            }
+
+            // ALWAYS UPDATE WEDDING TIMER (Until it passes)
+            updateTimerDisplay(WEDDING_DATE - now, 'w');
+        }
+
+        // Run Logic
+        setInterval(heartBeat, 1000);
+        heartBeat(); // Initial call
+        
+    </script>
+</body>
+</html>
