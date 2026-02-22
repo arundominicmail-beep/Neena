@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Neena</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;600&family=Caveat:wght@400;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #050510;
+            color: #f0e6ff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* ====== BG ====== */
+        #bgCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #confettiCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ====== PAGES ====== */
+        .page {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            text-align: center;
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ====== PROGRESS ====== */
+        #progressBar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b9d, #f9ca24, #a855f7);
+            z-index: 500;
+            width: 0%;
+            transition: width 0.8s ease;
+        }
+
+        #pageNum {
+            position: fixed;
+            top: 12px; right: 16px;
+            z-index: 500;
+            font-size: 0.7rem;
+            color: rgba(240, 230, 255, 0.2);
+            display: none;
+        }
+
+        #tapHint {
+            position: fixed;
+            bottom: 28px;
+            left: 0; right: 0;
+            text-align: center;
+            z-index: 500;
+            font-size: 0.75rem;
+            color: rgba(240, 230, 255, 0.18);
+            letter-spacing: 1px;
+            animation: hintPulse 2.5s ease-in-out infinite;
+            display: none;
+            pointer-events: none;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ====== INTRO PAGE ====== */
+        .intro-hello {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: rgba(240, 230, 255, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+        }
+
+        .intro-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            line-height: 1.3;
+            background: linear-gradient(135deg, #ff6b9d, #f9ca24, #a855f7, #ff6b9d);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s linear infinite;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+            margin: 8px 0;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
+        .intro-sub {
+            font-size: 0.95rem;
+            color: rgba(240, 230, 255, 0.3);
+            font-weight: 300;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .intro-btn {
+            margin-top: 40px;
+            padding: 16px 50px;
+            background: linear-gradient(135deg, #ff6b9d, #a855f7);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 35px rgba(255, 107, 157, 0.4);
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 20;
+            position: relative;
+        }
+
+        .intro-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 45px rgba(255, 107, 157, 0.6);
+        }
+
+        .intro-btn:active { transform: scale(0.97); }
+
+        .intro-show1 { opacity: 1 !important; transform: translateY(0) !important; }
+        .intro-show2 { opacity: 1 !important; }
+
+        /* ====== MESSAGE PAGES ====== */
+        .msg-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .page.active .msg-emoji {
+            opacity: 1;
+            transform: scale(1);
+            transition-delay: 0.3s;
+        }
+
+        .msg-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.9rem;
+            line-height: 1.6;
+            max-width: 340px;
+            color: rgba(240, 230, 255, 0.85);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .page.active .msg-text {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+
+        .msg-sub {
+            font-size: 0.8rem;
+            color: rgba(240, 230, 255, 0.25);
+            margin-top: 15px;
+            font-weight: 300;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .page.active .msg-sub {
+            opacity: 1;
+            transition-delay: 1.2s;
+        }
+
+        .glow-pink { color: #ff9ec0; text-shadow: 0 0 30px rgba(255, 107, 157, 0.3); }
+        .glow-gold { color: #fde68a; text-shadow: 0 0 30px rgba(249, 202, 36, 0.3); }
+        .glow-blue { color: #a5f3fc; text-shadow: 0 0 30px rgba(34, 211, 238, 0.3); }
+        .glow-white { color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
+
+        /* ====== FINALE ====== */
+        .finale-initials {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: #ff6b9d;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page.active .finale-initials {
+            opacity: 1;
+            transform: scale(1);
+            transition-delay: 0.5s;
+        }
+
+        .finale-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            line-height: 1.7;
+            max-width: 320px;
+            color: rgba(240, 230, 255, 0.7);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page.active .finale-text {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 1.2s;
+        }
+
+        .finale-date {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            color: #f9ca24;
+            margin-top: 20px;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 1s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page.active .finale-date {
+            opacity: 1;
+            transition-delay: 2.2s;
+        }
+
+        #heartCanvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        /* ====== SHOOTING STAR ====== */
+        .shooting-star {
+            position: fixed;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 480px) {
+            .intro-name { font-size: 3rem; }
+            .msg-text { font-size: 1.55rem; max-width: 300px; }
+            .msg-emoji { font-size: 3rem; }
+            .finale-initials { font-size: 3rem; }
+            .finale-text { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<canvas id="confettiCanvas"></canvas>
+<div id="progressBar"></div>
+<div id="pageNum"></div>
+<div id="tapHint">tap anywhere to continue</div>
+
+<!-- PAGE 0: INTRO -->
+<div class="page active" id="page0">
+    <div class="intro-hello" id="ih">Hey...</div>
+    <div class="intro-name" id="in">Neena ✨</div>
+    <div class="intro-sub" id="is">I wrote the sky for you tonight</div>
+    <button class="intro-btn" id="ib" onclick="startJourney()">Read it? 💫</button>
+</div>
+
+<!-- PAGE 1 -->
+<div class="page" id="page1">
+    <div class="msg-emoji">🎵</div>
+    <div class="msg-text">
+        Your <span class="glow-pink">voice</span> is my favourite sound in this entire world.
+        <br><br>
+        I could listen to you talk about nothing... forever.
+    </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <div class="msg-emoji">👀</div>
+    <div class="msg-text">
+        Those <span class="glow-gold">eyes</span>...
+        <br><br>
+        I looked at them once and forgot every other beautiful thing I'd ever seen.
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+    <div class="msg-emoji">🫶</div>
+    <div class="msg-text">
+        The way you <span class="glow-pink">care</span> about people —
+        <br>so kind, so compassionate —
+        <br><br>
+        that's when I knew you were different from everyone.
+    </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+    <div class="msg-emoji">🧸</div>
+    <div class="msg-text">
+        You're <span class="glow-gold">cute</span> without even trying.
+        <br><br>
+        And the worst part?
+        <br>You don't even know it.
+    </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="page5">
+    <div class="msg-emoji">🧠</div>
+    <div class="msg-text">
+        Smart. <span class="glow-blue">Intelligent.</span> Quick.
+        <br><br>
+        Every conversation with you feels like the best conversation I've ever had.
+    </div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="page6">
+    <div class="msg-emoji">🍎</div>
+    <div class="msg-text">
+        You teach little kids.
+        <br>You shape <span class="glow-gold">futures</span>.
+        <br><br>
+        There's nothing more beautiful than a heart that gives like yours.
+    </div>
+</div>
+
+<!-- PAGE 7 -->
+<div class="page" id="page7">
+    <div class="msg-emoji">📱</div>
+    <div class="msg-text">
+        <span class="glow-pink">December 10th. 8:30 PM.</span>
+        <br><br>
+        One call.
+        <br>That's all it took.
+        <br><br>
+        I knew right then — you're the one.
+    </div>
+    <div class="msg-sub">the call that changed my whole life</div>
+</div>
+
+<!-- PAGE 8 -->
+<div class="page" id="page8">
+    <div class="msg-emoji">✈️</div>
+    <div class="msg-text">
+        <span class="glow-blue">Bangalore to Indore</span>
+        <br><br>
+        wasn't a trip.
+        <br><br>
+        It was me... running towards the rest of my life.
+    </div>
+</div>
+
+<!-- PAGE 9 -->
+<div class="page" id="page9">
+    <div class="msg-emoji">⛪</div>
+    <div class="msg-text">
+        In front of that <span class="glow-gold">church grotto</span>,
+        <br>with God watching us,
+        <br><br>
+        I said <span class="glow-pink">"I love you"</span>
+        <br><br>
+        and my soul finally felt complete.
+    </div>
+</div>
+
+<!-- PAGE 10 -->
+<div class="page" id="page10">
+    <div class="msg-emoji">🏠</div>
+    <div class="msg-text">
+        Home isn't Bangalore.
+        <br>Home isn't Indore.
+        <br><br>
+        <span class="glow-white">Home is wherever you are.</span>
+    </div>
+</div>
+
+<!-- PAGE 11 -->
+<div class="page" id="page11">
+    <div class="msg-emoji">🙏</div>
+    <div class="msg-text">
+        I asked God for someone <span class="glow-gold">real</span>.
+        <br><br>
+        He opened a matrimony site...
+        <br>and pointed me straight to <span class="glow-pink">you</span>.
+    </div>
+    <div class="msg-sub">Dec 9th — the interest I almost didn't send</div>
+</div>
+
+<!-- PAGE 12: FINALE -->
+<div class="page" id="page12">
+    <canvas id="heartCanvas"></canvas>
+    <div class="finale-initials">A ❤️ N</div>
+    <div class="finale-text">
+        Every star I ever wished on...
+        <br>led me to you.
+        <br><br>
+        <strong style="color:#f9ca24">August 29, 2026</strong>
+        <br>I become yours. Forever.
+    </div>
+    <div class="finale-date">I LOVE YOU, NEENA 💕</div>
+</div>
+
+<script>
+    // ===== CONFIG =====
+    var pages = ['page0','page1','page2','page3','page4','page5','page6','page7','page8','page9','page10','page11','page12'];
+    var totalPages = pages.length;
+    var current = 0;
+    var canTap = false;
+    var started = false;
+
+    // ===== BG STARS =====
+    var bgC = document.getElementById('bgCanvas');
+    var bgX = bgC.getContext('2d');
+    var bgStars = [];
+
+    function resizeCanvas() {
+        bgC.width = window.innerWidth;
+        bgC.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Create stars
+    for (var i = 0; i < 100; i++) {
+        bgStars.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            size: Math.random() * 1.5 + 0.3,
+            baseOpacity: Math.random() * 0.3 + 0.05,
+            pulse: Math.random() * 6.28,
+            pulseSpeed: Math.random() * 0.02 + 0.005,
+            color: getStarColor()
+        });
+    }
+
+    function getStarColor() {
+        var r = Math.random();
+        if (r < 0.4) return '255,107,157';
+        if (r < 0.65) return '168,85,247';
+        if (r < 0.8) return '249,202,36';
+        return '255,255,255';
+    }
+
+    function drawBackground() {
+        bgX.clearRect(0, 0, bgC.width, bgC.height);
+        for (var i = 0; i < bgStars.length; i++) {
+            var s = bgStars[i];
+            s.pulse += s.pulseSpeed;
+            var opacity = s.baseOpacity + Math.sin(s.pulse) * 0.1;
+            if (opacity < 0) opacity = 0;
+            bgX.beginPath();
+            bgX.arc(s.x, s.y, s.size, 0, 6.28);
+            bgX.fillStyle = 'rgba(' + s.color + ',' + opacity + ')';
+            bgX.fill();
+        }
+        requestAnimationFrame(drawBackground);
+    }
+    drawBackground();
+
+    // ===== INTRO ANIMATION =====
+    function runIntro() {
+        setTimeout(function() {
+            document.getElementById('ih').classList.add('intro-show1');
+        }, 300);
+        setTimeout(function() {
+            document.getElementById('in').classList.add('intro-show1');
+        }, 1200);
+        setTimeout(function() {
+            document.getElementById('is').classList.add('intro-show2');
+        }, 2200);
+        setTimeout(function() {
+            document.getElementById('ib').classList.add('intro-show2');
+        }, 3200);
+    }
+
+    // Start intro right away
+    runIntro();
+
+    // ===== START JOURNEY =====
+    function startJourney() {
+        started = true;
+        document.getElementById('tapHint').style.display = 'block';
+        document.getElementById('pageNum').style.display = 'block';
+        goToPage(1);
+    }
+
+    // ===== TAP TO NAVIGATE =====
+    document.addEventListener('click', function(e) {
+        if (!started) return;
+        if (!canTap) return;
+
+        // Don't navigate if they clicked the button
+        if (e.target.tagName === 'BUTTON') return;
+
+        if (current < totalPages - 1) {
+            goToPage(current + 1);
+        }
+    });
+
+    // Swipe support
+    var touchY = 0;
+    document.addEventListener('touchstart', function(e) {
+        touchY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', function(e) {
+        if (!started || !canTap) return;
+        var diff = touchY - e.changedTouches[0].clientY;
+        if (diff > 40 && current < totalPages - 1) {
+            goToPage(current + 1);
+        }
+        if (diff < -40 && current > 1) {
+            goToPage(current - 1);
+        }
+    }, { passive: true });
+
+    // ===== GO TO PAGE =====
+    function goToPage(num) {
+        if (num < 0 || num >= totalPages) return;
+        canTap = false;
+
+        // Hide current page
+        var currentEl = document.getElementById(pages[current]);
+        currentEl.classList.remove('active');
+
+        // Show new page
+        current = num;
+        var nextEl = document.getElementById(pages[current]);
+        nextEl.classList.add('active');
+
+        // Progress bar
+        var pct = (num / (totalPages - 1)) * 100;
+        document.getElementById('progressBar').style.width = pct + '%';
+
+        // Page counter
+        if (num > 0 && num < totalPages - 1) {
+            document.getElementById('pageNum').textContent = num + ' / ' + (totalPages - 2);
+        } else if (num === totalPages - 1) {
+            document.getElementById('pageNum').textContent = '✨';
+        }
+
+        // Hide tap hint on last page
+        if (num === totalPages - 1) {
+            document.getElementById('tapHint').style.display = 'none';
+        }
+
+        // Heart animation on last page
+        if (num === totalPages - 1) {
+            setTimeout(function() { animateHeart(); }, 800);
+            setTimeout(function() { launchConfetti(); }, 3000);
+        }
+
+        // Allow tap again after animation
+        setTimeout(function() { canTap = true; }, 1200);
+    }
+
+    // ===== SHOOTING STARS =====
+    setInterval(function() {
+        if (!started) return;
+
+        var el = document.createElement('div');
+        el.className = 'shooting-star';
+        el.style.top = (Math.random() * 40) + '%';
+        el.style.left = (Math.random() * 70) + '%';
+
+        var angle = 25 + Math.random() * 20;
+        el.style.transform = 'rotate(' + angle + 'deg)';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+
+        // Animate manually
+        var startTime = Date.now();
+        var duration = 1200;
+
+        function animShoot() {
+            var elapsed = Date.now() - startTime;
+            var progress = elapsed / duration;
+
+            if (progress >= 1) {
+                el.remove();
+                return;
+            }
+
+            var translateX = progress * 350;
+            var opacity = progress < 0.2 ? progress * 5 : (1 - progress) * 1.25;
+            if (opacity > 0.8) opacity = 0.8;
+            if (opacity < 0) opacity = 0;
+
+            el.style.transform = 'rotate(' + angle + 'deg) translateX(' + translateX + 'px)';
+            el.style.opacity = opacity;
+
+            requestAnimationFrame(animShoot);
+        }
+        animShoot();
+
+    }, 6000);
+
+    // ===== HEART ANIMATION =====
+    function animateHeart() {
+        var canvas = document.getElementById('heartCanvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        var points = [];
+        var scale = Math.min(canvas.width, canvas.height) * 0.22;
+        var cx = canvas.width / 2;
+        var cy = canvas.height / 2 - 30;
+
+        var colors = ['#ff6b9d', '#f9ca24', '#a855f7', '#ffffff', '#ff6b9d', '#f472b6', '#fde68a'];
+
+        // Outline points
+        for (var i = 0; i < 80; i++) {
+            var t = (i / 80) * Math.PI * 2;
+            var hx = 16 * Math.pow(Math.sin(t), 3);
+            var hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+            points.push({
+                tx: cx + (hx / 16) * scale,
+                ty: cy + (hy / 16) * scale,
+                sx: Math.random() * canvas.width,
+                sy: Math.random() * canvas.height,
+                size: Math.random() * 2.5 + 1,
+                opacity: Math.random() * 0.4 + 0.4,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            });
+        }
+
+        // Fill points
+        for (var i = 0; i < 40; i++) {
+            var t = Math.random() * Math.PI * 2;
+            var r = Math.random() * 0.7;
+            var hx = 16 * Math.pow(Math.sin(t), 3) * r;
+            var hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * r;
+            points.push({
+                tx: cx + (hx / 16) * scale,
+                ty: cy + (hy / 16) * scale,
+                sx: Math.random() * canvas.width,
+                sy: Math.random() * canvas.height,
+                size: Math.random() * 2 + 0.5,
+                opacity: Math.random() * 0.3 + 0.3,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            });
+        }
+
+        var frame = 0;
+        var formDuration = 120;
+
+        function drawHeart() {
+            frame++;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            var progress = frame / formDuration;
+            if (progress > 1) progress = 1;
+
+            // Ease out cubic
+            var eased = 1 - Math.pow(1 - progress, 3);
+
+            // Pulse after formation
+            var pulse = 1;
+            if (frame > formDuration) {
+                pulse = 1 + Math.sin((frame - formDuration) * 0.04) * 0.02;
+            }
+
+            for (var i = 0; i < points.length; i++) {
+                var p = points[i];
+                var dx = p.tx - cx;
+                var dy = p.ty - cy;
+                var finalX = cx + dx * pulse;
+                var finalY = cy + dy * pulse;
+                var x = p.sx + (finalX - p.sx) * eased;
+                var y = p.sy + (finalY - p.sy) * eased;
+
+                // Glow
+                ctx.beginPath();
+                ctx.arc(x, y, p.size * 3, 0, 6.28);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.opacity * 0.1 * eased;
+                ctx.fill();
+
+                // Star
+                ctx.beginPath();
+                ctx.arc(x, y, p.size, 0, 6.28);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.opacity * eased;
+                ctx.fill();
+            }
+
+            ctx.globalAlpha = 1;
+
+            if (frame < formDuration + 300) {
+                requestAnimationFrame(drawHeart);
+            }
+        }
+
+        drawHeart();
+    }
+
+    // ===== CONFETTI =====
+    function launchConfetti() {
+        var canvas = document.getElementById('confettiCanvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        var pieces = [];
+        var colors = ['#ff6b9d', '#a855f7', '#4ade80', '#f9ca24', '#ef4444', '#22d3ee', '#f472b6', '#fbbf24'];
+
+        function createBurst() {
+            for (var i = 0; i < 70; i++) {
+                pieces.push({
+                    x: canvas.width / 2 + (Math.random() - 0.5) * 150,
+                    y: canvas.height / 2,
+                    w: Math.random() * 8 + 4,
+                    h: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 14,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 1) * 13 - 5,
+                    gravity: 0.14,
+                    opacity: 1
+                });
+            }
+        }
+
+        createBurst();
+        setTimeout(createBurst, 500);
+        setTimeout(createBurst, 1100);
+
+        var frame = 0;
+
+        function drawConfetti() {
+            frame++;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            var hasAlive = false;
+
+            for (var i = 0; i < pieces.length; i++) {
+                var p = pieces[i];
+                if (p.opacity <= 0) continue;
+
+                hasAlive = true;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.rotation += p.rotSpeed;
+                p.vx *= 0.99;
+
+                if (p.y > canvas.height + 50) {
+                    p.opacity -= 0.025;
+                }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.globalAlpha = p.opacity > 0 ? p.opacity : 0;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            }
+
+            if (hasAlive || frame < 180) {
+                requestAnimationFrame(drawConfetti);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        drawConfetti();
+    }
+
+    // Resize handler
+    window.addEventListener('resize', function() {
+        var c = document.getElementById('confettiCanvas');
+        c.width = window.innerWidth;
+        c.height = window.innerHeight;
+        resizeCanvas();
+    });
+</script>
+
+</body>
+</html>
