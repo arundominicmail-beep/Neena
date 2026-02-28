@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Food Logger</title>
+    <meta name="description" content="A beautiful and simple app to log your daily food intake and track calories.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header / Date Navigator -->
+        <header class="date-navigator">
+            <button id="prev-btn" class="icon-btn" aria-label="Previous Day">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+            </button>
+            <div class="current-date">
+                <h1 id="date-display">Today</h1>
+                <p id="full-date-display">Loading...</p>
+            </div>
+            <button id="next-btn" class="icon-btn" aria-label="Next Day">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Settings / Data Operations -->
+        <section class="data-operations">
+            <button id="export-btn" class="pill-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" x2="12" y1="15" y2="3" />
+                </svg>
+                Export Backup
+            </button>
+
+            <label for="import-file" class="pill-btn import-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" x2="12" y1="3" y2="15" />
+                </svg>
+                Import Backup
+            </label>
+            <input type="file" id="import-file" accept=".txt,.json" class="hidden">
+        </section>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            <!-- Summary Stats -->
+            <section class="summary-card glassmorphism">
+                <div class="stat-circle">
+                    <svg class="progress-ring" width="120" height="120">
+                        <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.1)" stroke-width="8"
+                            fill="transparent" r="52" cx="60" cy="60" />
+                        <circle class="progress-ring__circle" stroke="var(--primary-color)" stroke-width="8"
+                            fill="transparent" r="52" cx="60" cy="60" />
+                    </svg>
+                    <div class="stat-content">
+                        <span id="total-calories" class="calorie-value">0</span>
+                        <span class="calorie-label">kcal</span>
+                    </div>
+                </div>
+                <h2>Daily Total</h2>
+            </section>
+
+            <!-- Food Entries List -->
+            <section class="entries-section">
+                <div class="entries-header">
+                    <h2>Meals & Snacks</h2>
+                </div>
+                <div id="entries-list" class="entries-list">
+                    <!-- Entries will be dynamically injected here -->
+                    <div class="empty-state">
+                        <p>No meals logged yet today.</p>
+                        <p>Click + to add your first meal!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button id="add-fab" class="fab" aria-label="Add new entry">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14" />
+                <path d="M12 5v14" />
+            </svg>
+        </button>
+
+        <!-- Add Entry Modal Overlay -->
+        <div id="entry-modal" class="modal hidden">
+            <div class="modal-content glassmorphism">
+                <div class="modal-header">
+                    <h2>Add Food</h2>
+                    <button class="close-btn icon-btn" id="close-modal-btn" aria-label="Close modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18" />
+                            <path d="m6 6 12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <form id="add-form">
+                    <div class="form-group">
+                        <label for="food-name">What did you eat?</label>
+                        <input type="text" id="food-name" required placeholder="e.g. Avocado Toast" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="calories">Calories (kcal)</label>
+                        <input type="number" id="calories" required placeholder="e.g. 350" min="0">
+                    </div>
+                    <button type="submit" class="submit-btn">Add to Diary</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
