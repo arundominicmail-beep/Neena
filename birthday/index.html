@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Neenu ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ivory: #FFFDF8;
+  --cream: #FAF5EC;
+  --champagne: #F4E4C4;
+  --rose: #C2788A;
+  --rose-d: #8B5566;
+  --gold: #C9A455;
+  --gold-l: #E8CC88;
+  --dark: #18101A;
+  --dark2: #20141E;
+  --char: #26181E;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Manrope', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--ivory); color: var(--char); font-family: var(--sans); overflow-x: hidden; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+/* ── REVEALS ── */
+.r { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+.r.on { opacity: 1; transform: none; }
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.32s}.d4{transition-delay:.46s}
+
+/* ══════════ HERO ══════════ */
+#hero {
+  height: 100dvh; min-height: 600px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at 40% 55%, #2B1828 0%, #130D17 52%, #1E1608 100%);
+  position: relative; overflow: hidden; text-align: center;
+}
+#pc { position: absolute; inset: 0; pointer-events: none; }
+#hero::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 22%, rgba(6,3,8,.62) 100%);
+}
+.hero-inner { position: relative; z-index: 2; padding: 2rem; }
+
+.hero-eye {
+  font-family: var(--sans); font-size: .68rem; letter-spacing: .28em;
+  text-transform: uppercase; color: var(--gold-l); opacity: .55;
+  margin-bottom: 1.8rem;
+  animation: up 1.2s cubic-bezier(.22,1,.36,1) .3s both;
+}
+.hero-name {
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: clamp(4.2rem, 15vw, 10.5rem); line-height: .95;
+  color: var(--ivory); letter-spacing: -.02em;
+  animation: up 1.3s cubic-bezier(.22,1,.36,1) .5s both;
+}
+.hero-name span { color: var(--gold-l); font-style: normal; display: block; font-size: .38em; letter-spacing: .06em; margin-bottom: .2em; font-weight: 300; }
+.hero-sub {
+  margin-top: 1.6rem;
+  font-family: var(--serif); font-size: clamp(1rem, 2.6vw, 1.45rem);
+  font-weight: 300; font-style: italic; color: rgba(255,253,248,.45);
+  animation: up 1.3s cubic-bezier(.22,1,.36,1) .8s both;
+}
+.hero-cta {
+  display: inline-block; margin-top: 3rem; padding: .82rem 2.4rem;
+  border: 1px solid rgba(201,164,85,.32); color: rgba(232,204,136,.75);
+  font-family: var(--sans); font-size: .72rem; letter-spacing: .2em;
+  text-transform: uppercase; text-decoration: none;
+  background: rgba(201,164,85,.05); backdrop-filter: blur(6px); cursor: pointer;
+  transition: all .4s ease;
+  animation: up 1.3s cubic-bezier(.22,1,.36,1) 1.05s both;
+}
+.hero-cta:hover { background: rgba(201,164,85,.13); border-color: rgba(201,164,85,.6); color: var(--ivory); }
+.scroll-ind { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2; animation: fi 1s 2.2s both; }
+.scroll-ln { width: 1px; height: 48px; background: linear-gradient(to bottom, transparent, rgba(201,164,85,.5)); margin: auto; animation: sp 2s ease-in-out infinite; }
+@keyframes up { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+@keyframes fi { from{opacity:0}to{opacity:1} }
+@keyframes sp { 0%,100%{opacity:.25}50%{opacity:.85} }
+
+/* ══════════ MARQUEE ══════════ */
+#strip {
+  background: var(--champagne); padding: .95rem 0; overflow: hidden;
+  border-top: 1px solid rgba(201,164,85,.18); border-bottom: 1px solid rgba(201,164,85,.18);
+}
+.mq { display: flex; width: max-content; animation: mq 24s linear infinite; }
+.mq span { font-family: var(--serif); font-size: 1rem; font-style: italic; font-weight: 300; color: var(--rose-d); padding: 0 2.4rem; white-space: nowrap; }
+.mq span.dot { color: var(--gold); font-style: normal; padding: 0 .4rem; }
+@keyframes mq { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+
+/* ══════════ QUOTE BAND ══════════ */
+#qband {
+  background: var(--cream); padding: 7rem 2rem;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.qband-inner { max-width: 740px; }
+.qband-rule { width: 44px; height: 1px; background: var(--gold); margin: 0 auto 2.4rem; }
+.qband-text {
+  font-family: var(--serif); font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+  font-weight: 300; font-style: italic; color: var(--char);
+  line-height: 1.35; letter-spacing: -.01em;
+}
+.qband-text em { color: var(--rose-d); font-style: normal; }
+.qband-rule2 { width: 44px; height: 1px; background: var(--gold); margin: 2.4rem auto 0; }
+
+/* ══════════ CAKE ══════════ */
+#cake-sec {
+  background: linear-gradient(168deg, #1C1120 0%, #150F1A 55%, #1C1508 100%);
+  padding: 7rem 2rem 8rem; display: flex; flex-direction: column;
+  align-items: center; text-align: center; position: relative; overflow: hidden;
+}
+#sc { position: absolute; inset: 0; pointer-events: none; }
+.spk { position: absolute; border-radius: 50%; background: var(--gold); animation: spk 3s ease-in-out infinite; }
+@keyframes spk { 0%,100%{opacity:0;transform:translateY(0) scale(.5)}35%{opacity:.9;transform:translateY(-14px) scale(1)}70%{opacity:.3;transform:translateY(-24px) scale(.6)} }
+.cake-svg { width: clamp(150px, 26vw, 210px); position: relative; z-index: 1; filter: drop-shadow(0 0 28px rgba(201,164,85,.16)); }
+.fl { transform-origin: center bottom; animation: fl 1.7s ease-in-out infinite alternate; }
+.fl:nth-child(2){animation-delay:.28s}.fl:nth-child(3){animation-delay:.55s}
+@keyframes fl { from{transform:scaleX(1) rotate(-2deg)}to{transform:scaleX(.8) scaleY(1.14) rotate(2deg)} }
+.cake-title {
+  position: relative; z-index: 1; margin-top: 2.8rem;
+  font-family: var(--serif); font-size: clamp(2rem, 5.5vw, 3.5rem);
+  font-weight: 300; font-style: italic; color: var(--ivory); letter-spacing: -.01em;
+}
+.cake-sub { font-family: var(--sans); font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; color: var(--gold-l); opacity: .55; margin-top: .7rem; font-style: normal; }
+
+/* ══════════ I LOVE YOU ══════════ */
+#ily {
+  background: var(--ivory); padding: 8rem 2rem;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.ily-word {
+  font-family: var(--serif); font-weight: 300; font-style: italic;
+  font-size: clamp(3.5rem, 12vw, 8rem); line-height: 1.05; color: var(--char);
+  letter-spacing: -.02em;
+}
+.ily-word.gold { color: var(--gold); }
+.ily-word.rose { color: var(--rose-d); }
+.ily-spacer { width: 1px; height: 2.2rem; background: rgba(201,164,85,.3); margin: .8rem auto; }
+.ily-name {
+  font-family: var(--serif); font-size: clamp(1.2rem, 3.5vw, 2rem);
+  font-weight: 300; color: rgba(42,24,30,.4); letter-spacing: .06em; margin-top: 1rem;
+  font-style: italic;
+}
+
+/* ══════════ NOTES GRID ══════════ */
+#notes {
+  background: linear-gradient(172deg, #1C1120 0%, #18101C 100%);
+  padding: 7rem 2rem 8rem;
+}
+.notes-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.1rem; max-width: 940px; margin: 0 auto;
+}
+.note {
+  background: rgba(255,253,248,.04); border: 1px solid rgba(201,164,85,.12);
+  padding: 2rem 1.6rem; backdrop-filter: blur(6px);
+  transition: transform .45s cubic-bezier(.22,1,.36,1), background .4s;
+}
+.note:hover { transform: translateY(-6px); background: rgba(255,253,248,.08); }
+.note-q { font-family: var(--serif); font-size: 1.4rem; color: rgba(232,204,136,.25); margin-bottom: .7rem; line-height: 1; }
+.note-t { font-family: var(--serif); font-size: clamp(.9rem, 2vw, 1.1rem); font-weight: 300; font-style: italic; color: rgba(255,253,248,.78); line-height: 1.55; }
+
+/* ══════════ PROMISES ══════════ */
+#promises { background: var(--champagne); padding: 7rem 2rem; }
+.prom-wrap { max-width: 880px; margin: 0 auto; }
+.prom-label { font-family: var(--sans); font-size: .67rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 2.4rem; }
+.prom-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  border: 1px solid rgba(194,120,138,.2);
+}
+.pc {
+  padding: 2.6rem 2.2rem;
+  border-right: 1px solid rgba(194,120,138,.15);
+  border-bottom: 1px solid rgba(194,120,138,.15);
+  transition: background .35s;
+}
+.pc:nth-child(2n) { border-right: none; }
+.pc:nth-child(3), .pc:nth-child(4) { border-bottom: none; }
+.pc:hover { background: rgba(255,253,248,.6); }
+.pn { font-family: var(--serif); font-size: 1.9rem; font-weight: 300; font-style: italic; color: var(--gold); line-height: 1; margin-bottom: .9rem; }
+.pt { font-family: var(--serif); font-size: clamp(.95rem, 2.2vw, 1.15rem); font-weight: 300; font-style: italic; color: var(--char); line-height: 1.5; }
+@media(max-width:520px){.prom-grid{grid-template-columns:1fr}.pc{border-right:none}.pc:nth-child(3){border-bottom:1px solid rgba(194,120,138,.15)}}
+
+/* ══════════ LETTER ══════════ */
+#letter { background: var(--cream); padding: 8rem 2rem 9rem; display: flex; flex-direction: column; align-items: center; }
+.ltr-label { font-family: var(--sans); font-size: .67rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 2.8rem; text-align: center; }
+.ltr-paper {
+  background: var(--ivory); max-width: 700px; width: 100%;
+  border: 1px solid rgba(194,120,138,.15); padding: 4.5rem 4.5rem;
+  position: relative; box-shadow: 0 4px 48px rgba(30,10,20,.06), 0 1px 3px rgba(30,10,20,.04);
+}
+.ltr-paper::before { content:''; position:absolute; top:0;left:0;right:0;height:3px; background:linear-gradient(to right,var(--rose),var(--gold),var(--rose)); }
+.ltr-date { font-family: var(--serif); font-size: .9rem; font-style: italic; color: rgba(38,24,30,.38); margin-bottom: 2rem; }
+.ltr-sal { font-family: var(--serif); font-size: 1.55rem; font-style: italic; color: var(--rose-d); margin-bottom: 2rem; }
+.ltr-body { font-size: .99rem; font-weight: 300; color: rgba(38,24,30,.7); line-height: 2.05; }
+.ltr-body p+p { margin-top: 1.35rem; }
+.ltr-ily { font-family: var(--serif); font-size: 1.55rem; font-style: italic; color: var(--rose-d); margin: 2rem 0; }
+.ltr-close { margin-top: 2.6rem; font-family: var(--serif); font-size: 1rem; font-style: italic; color: rgba(38,24,30,.55); }
+.ltr-sig { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; font-style: italic; color: var(--rose-d); margin-top: .4rem; }
+@media(max-width:580px){.ltr-paper{padding:2.6rem 1.8rem}}
+
+/* ══════════ FINALE ══════════ */
+#finale {
+  min-height: 100dvh; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 5rem 2rem;
+  background: radial-gradient(ellipse at 50% 48%, #2B1828 0%, #130D17 50%, #1E1608 100%);
+  position: relative; overflow: hidden;
+}
+#fc { position: absolute; inset: 0; pointer-events: none; }
+.fin { position: relative; z-index: 1; }
+.fin-top { font-family: var(--serif); font-size: clamp(.95rem, 2.5vw, 1.35rem); font-weight: 300; font-style: italic; color: rgba(255,253,248,.32); animation: up 1.2s cubic-bezier(.22,1,.36,1) .3s both; }
+.fin-big { font-family: var(--serif); font-size: clamp(2.6rem, 8.5vw, 6.5rem); font-weight: 300; line-height: 1.05; color: var(--ivory); letter-spacing: -.02em; margin: .9rem 0; animation: up 1.2s cubic-bezier(.22,1,.36,1) .6s both; }
+.fin-big em { font-style: italic; color: var(--gold-l); }
+.fin-rule { width: 44px; height: 1px; background: var(--gold); margin: 1.8rem auto; animation: up 1.2s cubic-bezier(.22,1,.36,1) .88s both; }
+.fin-ily { font-family: var(--serif); font-size: clamp(1.8rem, 6vw, 4rem); font-weight: 300; font-style: italic; color: var(--rose); margin-bottom: 1rem; animation: up 1.2s cubic-bezier(.22,1,.36,1) 1.05s both; }
+.fin-roles { font-family: var(--sans); font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,253,248,.28); animation: up 1.2s cubic-bezier(.22,1,.36,1) 1.2s both; }
+.fin-heart { font-size: 2rem; margin-top: 2.4rem; display: inline-block; animation: up 1.2s cubic-bezier(.22,1,.36,1) 1.35s both, hb 2.2s ease-in-out 2.8s infinite; }
+@keyframes hb { 0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(1)}45%{transform:scale(1.08)} }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <canvas id="pc" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <h1 class="hero-name">
+      <span>Happy Birthday,</span>
+      Neenu
+    </h1>
+    <p class="hero-sub">Your last birthday before we begin our forever together.</p>
+    <a href="#qband" class="hero-cta">Open My Heart</a>
+  </div>
+  <div class="scroll-ind" aria-hidden="true"><div class="scroll-ln"></div></div>
+</section>
+
+<!-- ══ MARQUEE ══ -->
+<div id="strip" aria-hidden="true">
+<div class="mq">
+<span>Happy Birthday, Neenu</span><span class="dot">✦</span>
+<span>My Chakkarakutty</span><span class="dot">✦</span>
+<span>My Favorite Hello</span><span class="dot">✦</span>
+<span>Your Last Birthday as My Fiancée</span><span class="dot">✦</span>
+<span>My Safest Place</span><span class="dot">✦</span>
+<span>I Love You</span><span class="dot">✦</span>
+<span>My Forever Person</span><span class="dot">✦</span>
+<span>Soon, My Wife</span><span class="dot">✦</span>
+<span>I Love You More Every Day</span><span class="dot">✦</span>
+<span>You Make My World Brighter</span><span class="dot">✦</span>
+<span>I Love You</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ══ QUOTE BAND ══ -->
+<section id="qband">
+  <div class="qband-inner">
+    <div class="qband-rule r"></div>
+    <p class="qband-text r d1">
+      "You didn't change my world.<br>
+      You became the world I had been trying<br>
+      to describe without ever having<br>
+      <em>the right words.</em>"
+    </p>
+    <div class="qband-rule2 r d2"></div>
+  </div>
+</section>
+
+<!-- ══ CAKE ══ -->
+<section id="cake-sec">
+  <canvas id="sc" aria-hidden="true"></canvas>
+  <div class="spk" style="width:5px;height:5px;top:12%;left:20%;animation-delay:0s"></div>
+  <div class="spk" style="width:4px;height:4px;top:7%;left:58%;animation-delay:.8s"></div>
+  <div class="spk" style="width:5px;height:5px;top:18%;right:16%;animation-delay:1.5s"></div>
+  <div class="spk" style="width:3px;height:3px;top:5%;left:38%;animation-delay:.4s"></div>
+  <div class="spk" style="width:4px;height:4px;top:22%;right:34%;animation-delay:2s"></div>
+
+  <svg class="cake-svg r" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="100" cy="218" rx="72" ry="7" fill="#C9A455" opacity=".12"/>
+    <!-- Bottom tier -->
+    <rect x="14" y="152" width="172" height="60" rx="7" fill="#EDD9A0"/>
+    <rect x="14" y="152" width="172" height="16" rx="7" fill="#C9A455"/>
+    <path d="M14 168 Q28 176 42 168 Q56 176 70 168 Q84 176 98 168 Q112 176 126 168 Q140 176 154 168 Q168 176 182 168 Q186 174 186 180" stroke="white" stroke-width="2.5" fill="none" opacity=".4"/>
+    <circle cx="42" cy="186" r="4.5" fill="#C2788A" opacity=".55"/>
+    <circle cx="72" cy="186" r="4.5" fill="#C2788A" opacity=".55"/>
+    <circle cx="100" cy="186" r="4.5" fill="#C2788A" opacity=".55"/>
+    <circle cx="128" cy="186" r="4.5" fill="#C2788A" opacity=".55"/>
+    <circle cx="158" cy="186" r="4.5" fill="#C2788A" opacity=".55"/>
+    <!-- Mid tier -->
+    <rect x="30" y="105" width="140" height="50" rx="6" fill="#F4DDA8"/>
+    <rect x="30" y="105" width="140" height="13" rx="6" fill="#C9A455"/>
+    <path d="M30 118 Q44 125 58 118 Q72 125 86 118 Q100 125 114 118 Q128 125 142 118 Q156 125 170 118" stroke="white" stroke-width="2" fill="none" opacity=".35"/>
+    <circle cx="62" cy="133" r="3.8" fill="#8B5566" opacity=".45"/>
+    <circle cx="100" cy="133" r="3.8" fill="#8B5566" opacity=".45"/>
+    <circle cx="138" cy="133" r="3.8" fill="#8B5566" opacity=".45"/>
+    <!-- Top tier -->
+    <rect x="52" y="65" width="96" height="43" rx="5" fill="#FAF0D8"/>
+    <rect x="52" y="65" width="96" height="11" rx="5" fill="#C9A455"/>
+    <path d="M52 76 Q64 82 76 76 Q88 82 100 76 Q112 82 124 76 Q136 82 148 76" stroke="white" stroke-width="1.8" fill="none" opacity=".35"/>
+    <!-- Candles -->
+    <rect x="72" y="42" width="9" height="25" rx="2.5" fill="#EDD9A0"/>
+    <rect x="88" y="39" width="9" height="28" rx="2.5" fill="#C2788A" opacity=".8"/>
+    <rect x="104" y="42" width="9" height="25" rx="2.5" fill="#EDD9A0"/>
+    <line x1="76.5" y1="43" x2="76.5" y2="38" stroke="#888" stroke-width="1"/>
+    <line x1="92.5" y1="40" x2="92.5" y2="35" stroke="#888" stroke-width="1"/>
+    <line x1="108.5" y1="43" x2="108.5" y2="38" stroke="#888" stroke-width="1"/>
+    <!-- Flames -->
+    <g class="fl"><ellipse cx="76.5" cy="34" rx="4.5" ry="7" fill="#FFD166" opacity=".93"/><ellipse cx="76.5" cy="33" rx="2.2" ry="4" fill="#FF9B3D" opacity=".65"/></g>
+    <g class="fl"><ellipse cx="92.5" cy="31" rx="5" ry="7.5" fill="#FFD166" opacity=".93"/><ellipse cx="92.5" cy="30" rx="2.5" ry="4.5" fill="#FF9B3D" opacity=".65"/></g>
+    <g class="fl"><ellipse cx="108.5" cy="34" rx="4.5" ry="7" fill="#FFD166" opacity=".93"/><ellipse cx="108.5" cy="33" rx="2.2" ry="4" fill="#FF9B3D" opacity=".65"/></g>
+  </svg>
+
+  <p class="cake-title r d1">Happy Birthday, Neenu</p>
+<p class="cake-sub r d2">Soon my wife, always my greatest blessing</p>
+</section>
+
+<!-- ══ LETTER ══ -->
+<section id="letter">
+  <div class="ltr-paper r d1">
+    <p class="ltr-sal">My dearest Neenu,</p>
+    <div class="ltr-body">
+      <p>I have been trying to write this letter for days. Every time I begin, I feel like the words are never enough. I am trying anyway.</p>
+
+      <p>This is our first birthday together, and the first of a lifetime of birthdays we'll celebrate together. Thinking about that makes me happier than I can explain.</p>
+
+      <p>You have brought so much happiness, comfort, love, and laughter into my life. Somehow, even the most ordinary days feel special when I get to share them with you. Thank you for being patient with me, for understanding me, for supporting me, and for loving me the way you do.</p>
+
+      <p>Every day, I find new reasons to fall in love with you. Sometimes it's something big, but most of the time it's the little things — the way you care, the way you think, the way you make me feel understood, and the way you bring warmth into my life without even trying.</p>
+
+      <p>One of my favourite thoughts is that I get to grow old with you. Not just through the big milestones, but through all the quiet moments that make up a beautiful life. More birthdays, more memories, more laughter, and countless ordinary days made extraordinary simply because we share them.</p>
+
+      <p>Happy Birthday, Neenu. Thank you for making my world brighter, kinder, and more beautiful simply by being in it.</p>
+    </div>
+
+    <p class="ltr-ily">I love you. ❤️</p>
+
+    <p class="ltr-close">Yours, completely and always,</p>
+    <p class="ltr-sig">Your future husband</p>
+  </div>
+</section>
+
+
+<!-- ══ FINALE ══ -->
+<section id="finale">
+  <canvas id="fc" aria-hidden="true"></canvas>
+  <div class="fin">
+    <p class="fin-top">Today I celebrate your birthday.</p>
+    <h2 class="fin-big">Soon, I will celebrate<br>calling you <em>My Wife.</em></h2>
+    <div class="fin-rule"></div>
+    <p class="fin-ily">I love you, Neenu.</p>
+    <p class="fin-roles">My Love &nbsp;·&nbsp; My Best Friend &nbsp;·&nbsp; My Forever</p>
+    <div class="fin-heart">❤️</div>
+  </div>
+</section>
+
+<script>
+/* Scroll reveals */
+const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target);} }), {threshold:.12});
+document.querySelectorAll('.r').forEach(el => obs.observe(el));
+
+/* Smooth scroll CTA */
+document.querySelector('.hero-cta').addEventListener('click', e => { e.preventDefault(); document.getElementById('qband').scrollIntoView({behavior:'smooth'}); });
+
+/* Particle factory */
+function particles(id, n, cols) {
+  const cv = document.getElementById(id); if(!cv) return;
+  const cx = cv.getContext('2d'); let W, H, ps = [];
+  function sz(){ W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; }
+  sz(); window.addEventListener('resize', sz);
+  class P {
+    constructor(){ this.reset(); this.life = Math.random()*180; }
+    reset(){ this.x=Math.random()*(W||800); this.y=Math.random()*(H||600); this.r=Math.random()*1.5+.3; this.vx=(Math.random()-.5)*.2; this.vy=-(Math.random()*.38+.06); this.life=0; this.max=Math.random()*200+100; this.c=cols[Math.floor(Math.random()*cols.length)]; }
+    tick(){ this.x+=this.vx; this.y+=this.vy; this.life++; if(this.life>this.max||this.y<-8) this.reset(); }
+    draw(){ const t=this.life/this.max, f=t<.15?t/.15:t>.8?(1-t)/.2:1; cx.save(); cx.globalAlpha=.5*f; cx.fillStyle=this.c; cx.shadowColor=this.c; cx.shadowBlur=4; cx.beginPath(); cx.arc(this.x,this.y,this.r,0,Math.PI*2); cx.fill(); cx.restore(); }
+  }
+  for(let i=0;i<n;i++) ps.push(new P());
+  (function loop(){ cx.clearRect(0,0,W,H); ps.forEach(p=>{p.tick();p.draw();}); requestAnimationFrame(loop); })();
+}
+particles('pc', 95, ['#C9A455','#E8CC88','#F4E4C4','#C2788A']);
+particles('fc', 75, ['#C9A455','#E8CC88','#C2788A','#FAF5EC']);
+
+/* Stars for cake section */
+(function(){
+  const cv=document.getElementById('sc'); const cx=cv.getContext('2d'); let W,H,st=[];
+  function sz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  sz(); window.addEventListener('resize',sz);
+  for(let i=0;i<130;i++) st.push({x:Math.random(),y:Math.random(),r:Math.random()*1.1+.2,a:Math.random()*.6+.1,da:(Math.random()*.004+.001)*(Math.random()>.5?1:-1)});
+  (function loop(){
+    cx.clearRect(0,0,W,H);
+    st.forEach(s=>{s.a+=s.da;if(s.a<=.05||s.a>=.75)s.da*=-1;cx.save();cx.globalAlpha=s.a;cx.fillStyle='#E8CC88';cx.beginPath();cx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);cx.fill();cx.restore();});
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>
